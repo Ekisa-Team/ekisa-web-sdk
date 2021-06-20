@@ -19,6 +19,9 @@
     }
   },
   "projects": {
+    "core": {
+      "tags": ["lib"]
+    },
     "demo": {
       "tags": []
     },
