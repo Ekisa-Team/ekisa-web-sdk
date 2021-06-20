@@ -19,6 +19,9 @@
     }
   },
   "projects": {
+    "addon-ui": {
+      "tags": ["lib", "ui"]
+    },
     "core": {
       "tags": ["lib"]
     },

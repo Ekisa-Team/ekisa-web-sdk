@@ -1,6 +1,47 @@
 {
   "version": 1,
   "projects": {
+    "addon-ui": {
+      "projectType": "library",
+      "root": "libs/addon-ui",
+      "sourceRoot": "libs/addon-ui/src",
+      "prefix": "ekisa-sdk",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "outputs": ["dist/libs/addon-ui"],
+          "options": {
+            "project": "libs/addon-ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/addon-ui/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/addon-ui/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/addon-ui"],
+          "options": {
+            "jestConfig": "libs/addon-ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/addon-ui/src/**/*.ts",
+              "libs/addon-ui/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "core": {
       "projectType": "library",
       "root": "libs/core",
