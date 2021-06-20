@@ -11,7 +11,8 @@
           "builder": "@nrwl/angular:package",
           "outputs": ["dist/libs/addon-ui"],
           "options": {
-            "project": "libs/addon-ui/ng-package.json"
+            "project": "libs/addon-ui/ng-package.json",
+            "styles": ["./theme/styles.css"]
           },
           "configurations": {
             "production": {
@@ -99,7 +100,7 @@
             "polyfills": "apps/demo/src/polyfills.ts",
             "tsConfig": "apps/demo/tsconfig.app.json",
             "assets": ["apps/demo/src/favicon.ico", "apps/demo/src/assets"],
-            "styles": ["apps/demo/src/styles.css"],
+            "styles": ["./theme/styles.css"],
             "scripts": []
           },
           "configurations": {
