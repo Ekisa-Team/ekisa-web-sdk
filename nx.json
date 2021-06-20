@@ -23,7 +23,7 @@
       "tags": ["lib"]
     },
     "demo": {
-      "tags": []
+      "tags": ["app"]
     },
     "demo-e2e": {
       "tags": [],
