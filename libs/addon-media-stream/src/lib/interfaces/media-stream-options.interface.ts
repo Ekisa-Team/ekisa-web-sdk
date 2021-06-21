@@ -2,6 +2,13 @@ export interface MediaStreamOptions {
   enterWithAudio?: boolean;
   enterWithVideo?: boolean;
 
+  video: {
+    objectFit?: 'contain' | 'fill' | 'cover' | 'scale-down' | 'none';
+    width?: number;
+    height?: number;
+    framesColor?: string;
+  };
+
   controls: {
     showOutside?: boolean;
     position?: 'left' | 'top' | 'right' | 'bottom';

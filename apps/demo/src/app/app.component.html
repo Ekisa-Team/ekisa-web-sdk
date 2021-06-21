@@ -1,9 +1,15 @@
 <ekisa-sdk-media-stream
   [audio]="true"
-  [video]="{ width: 1280, height: 720 }"
+  [video]="true"
   [options]="{
-    enterWithAudio: true,
+    enterWithAudio: false,
     enterWithVideo: true,
+    video: {
+      width: 1280,
+      height: 768,
+      framesColor: '#ffc0cb',
+      objectFit: 'contain'
+    },
     controls: {
       showAudio: true,
       audioHint: 'Enable / disable audio',
@@ -11,9 +17,10 @@
       videoHint: 'Enable / disable video',
       showSnapshot: true,
       snapshotHint: 'Take a snapshot',
-      position: 'right'
+      position: 'bottom'
     }
   }"
+  objectFit="contain"
   (initialized)="onInitialized($event)"
   (trackChanged)="onTrackChanged($event)"
   (catchError)="onCatchError($event)"

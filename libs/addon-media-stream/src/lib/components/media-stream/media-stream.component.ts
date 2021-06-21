@@ -64,6 +64,27 @@ export class MediaStreamComponent implements OnInit, AfterViewInit {
       : this.iconMap.VideoClosed;
   }
 
+  get boxStyles(): string {
+    const width = `${this.options?.video?.width}px`;
+    const height = `${this.options?.video?.height}px`;
+
+    return `
+      max-width: ${width};
+      max-height: ${height};
+    `;
+  }
+
+  get videoStyles(): string {
+    const { width, height, objectFit, framesColor } = this.options?.video || {};
+
+    return `
+      width: ${width ? `${width}px` : '100%'};
+      height: ${height ? `${height}px` : '100vh'};
+      object-fit: ${objectFit || 'contain'};
+      background-color: ${framesColor || '#333'}
+    `;
+  }
+
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
