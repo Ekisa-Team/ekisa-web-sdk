@@ -43,10 +43,25 @@ export class MediaStreamComponent implements OnInit, AfterViewInit {
     TakeSnapshot: 'photo_camera',
   };
 
+  audioIsOpened = false;
+  videoIsOpened = false;
+
   constructor() {}
 
   get tracks(): MediaStreamTrack[] {
     return this.videoRef.nativeElement.srcObject.getTracks();
+  }
+
+  get audioIcon(): string {
+    return this.audioIsOpened
+      ? this.iconMap.AudioOpened
+      : this.iconMap.AudioClosed;
+  }
+
+  get videoIcon(): string {
+    return this.videoIsOpened
+      ? this.iconMap.VideoOpened
+      : this.iconMap.VideoClosed;
   }
 
   ngOnInit(): void {}
@@ -56,8 +71,10 @@ export class MediaStreamComponent implements OnInit, AfterViewInit {
   }
 
   onToggleAction(actionType: MediaStreamActionType): void {
-    if (actionType === 'audio' || actionType === 'video') {
-      this.toggleOrSet(actionType);
+    if (actionType === 'audio') {
+      this.audioIsOpened = this.toggleOrSet(actionType);
+    } else if (actionType === 'video') {
+      this.videoIsOpened = this.toggleOrSet(actionType);
     }
   }
 
@@ -75,6 +92,8 @@ export class MediaStreamComponent implements OnInit, AfterViewInit {
 
           this.toggleOrSet('audio', this.options.enterWithAudio);
           this.toggleOrSet('video', this.options.enterWithVideo);
+          this.audioIsOpened = !!this.options.enterWithAudio;
+          this.videoIsOpened = !!this.options.enterWithVideo;
 
           this.streamInitialized = true;
           this.initialized.emit({ tracks: this.tracks });
@@ -85,13 +104,16 @@ export class MediaStreamComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private toggleOrSet(kind: MediaStreamActionType, value?: boolean) {
+  private toggleOrSet(kind: MediaStreamActionType, value?: boolean): boolean {
     const track = this.tracks.find((t) => t.kind === kind);
+    let isEnabled = false;
 
     if (track) {
       track.enabled = value || !track.enabled;
+      isEnabled = track.enabled;
     }
 
     this.trackChanged.emit(track);
+    return isEnabled;
   }
 }

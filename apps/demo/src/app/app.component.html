@@ -1,13 +1,16 @@
 <ekisa-sdk-media-stream
   [audio]="true"
-  [video]="true"
+  [video]="{ width: 1280, height: 720 }"
   [options]="{
-    enterWithAudio: false,
+    enterWithAudio: true,
     enterWithVideo: true,
     controls: {
       showAudio: true,
+      audioHint: 'Enable / disable audio',
       showVideo: true,
+      videoHint: 'Enable / disable video',
       showSnapshot: true,
+      snapshotHint: 'Take a snapshot',
       position: 'right'
     }
   }"

@@ -13,7 +13,7 @@
       <ekisa-sdk-media-stream-control
         *ngIf="controls.showAudio"
         type="audio"
-        [icon]="iconMap.AudioOpened"
+        [icon]="audioIcon"
         [text]="controls.audioText"
         [hint]="controls.audioHint ?? ''"
         (toggle)="onToggleAction($event)"
@@ -23,9 +23,9 @@
       <ekisa-sdk-media-stream-control
         *ngIf="controls.showVideo"
         type="video"
-        [icon]="iconMap.AudioOpened"
-        [text]="controls.audioText"
-        [hint]="controls.audioHint ?? ''"
+        [icon]="videoIcon"
+        [text]="controls.videoText"
+        [hint]="controls.videoHint ?? ''"
         (toggle)="onToggleAction($event)"
       >
       </ekisa-sdk-media-stream-control>
@@ -33,10 +33,9 @@
       <ekisa-sdk-media-stream-control
         *ngIf="controls.showSnapshot"
         type="snapshot"
-        [icon]="iconMap.AudioOpened"
-        [text]="controls.audioText"
-        [hint]="controls.audioHint ?? ''"
-        (toggle)="onToggleAction($event)"
+        [icon]="iconMap.TakeSnapshot"
+        [text]="controls.snapshotText"
+        [hint]="controls.snapshotHint ?? ''"
       >
       </ekisa-sdk-media-stream-control>
     </ekisa-sdk-media-stream-toolbar>
