@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { MediaStreamModule } from '@ekisa-sdk/addon-ui';
+import { MediaStreamModule } from '@ekisa-sdk/addon-media-stream';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {

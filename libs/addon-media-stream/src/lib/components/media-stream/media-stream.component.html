@@ -1,0 +1,44 @@
+<div class="relative space-y-2">
+  <div class="overflow-hidden rounded-xl">
+    <video #video autoplay></video>
+  </div>
+
+  <div
+    class="flex px-4 py-2 space-x-3 text-gray-100 bg-gray-900 outline-none bg-opacity-30 backdrop-filter backdrop-blur-lg rounded-xl"
+    [ngClass]="{
+      'absolute bottom-2 inset-x-2': !options?.controls?.showOutside
+    }"
+  >
+    <ekisa-sdk-media-stream-control
+      *ngIf="options?.controls?.showAudio"
+      type="audio"
+      [icon]="iconMap.AudioOpened"
+      [text]="options?.controls?.audioText"
+      [hint]="options?.controls?.audioHint ?? ''"
+      (toggle)="onToggleAction($event)"
+    >
+    </ekisa-sdk-media-stream-control>
+
+    <ekisa-sdk-media-stream-control
+      *ngIf="options?.controls?.showVideo"
+      type="video"
+      [icon]="iconMap.AudioOpened"
+      [text]="options?.controls?.audioText"
+      [hint]="options?.controls?.audioHint ?? ''"
+      (toggle)="onToggleAction($event)"
+    >
+    </ekisa-sdk-media-stream-control>
+
+    <ekisa-sdk-media-stream-control
+      *ngIf="options?.controls?.showSnapshot"
+      type="snapshot"
+      [icon]="iconMap.AudioOpened"
+      [text]="options?.controls?.audioText"
+      [hint]="options?.controls?.audioHint ?? ''"
+      (toggle)="onToggleAction($event)"
+    >
+    </ekisa-sdk-media-stream-control>
+  </div>
+</div>
+
+<canvas #canvas style="display: none" [width]="" [height]=""></canvas>

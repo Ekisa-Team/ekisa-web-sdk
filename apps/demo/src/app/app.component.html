@@ -1,1 +1,13 @@
-<ekisa-sdk-media-stream></ekisa-sdk-media-stream>
+<ekisa-sdk-media-stream
+  [audio]="true"
+  [video]="true"
+  [options]="{
+    enterWithAudio: false,
+    enterWithVideo: true,
+    controls: {
+      showAudio: true,
+      showVideo: true,
+      showSnapshot: true
+    }
+  }"
+></ekisa-sdk-media-stream>

@@ -1,34 +1,34 @@
 {
   "version": 1,
   "projects": {
-    "addon-ui": {
+    "addon-media-stream": {
       "projectType": "library",
-      "root": "libs/addon-ui",
-      "sourceRoot": "libs/addon-ui/src",
+      "root": "libs/addon-media-stream",
+      "sourceRoot": "libs/addon-media-stream/src",
       "prefix": "ekisa-sdk",
       "architect": {
         "build": {
           "builder": "@nrwl/angular:package",
-          "outputs": ["dist/libs/addon-ui"],
+          "outputs": ["dist/libs/addon-media-stream"],
           "options": {
-            "project": "libs/addon-ui/ng-package.json",
+            "project": "libs/addon-media-stream/ng-package.json",
             "styles": ["./theme/styles.css"]
           },
           "configurations": {
             "production": {
-              "tsConfig": "libs/addon-ui/tsconfig.lib.prod.json"
+              "tsConfig": "libs/addon-media-stream/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "libs/addon-ui/tsconfig.lib.json"
+              "tsConfig": "libs/addon-media-stream/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/addon-ui"],
+          "outputs": ["coverage/libs/addon-media-stream"],
           "options": {
-            "jestConfig": "libs/addon-ui/jest.config.js",
+            "jestConfig": "libs/addon-media-stream/jest.config.js",
             "passWithNoTests": true
           }
         },
@@ -36,13 +36,14 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "libs/addon-ui/src/**/*.ts",
-              "libs/addon-ui/src/**/*.html"
+              "libs/addon-media-stream/src/**/*.ts",
+              "libs/addon-media-stream/src/**/*.html"
             ]
           }
         }
       }
     },
+
     "core": {
       "projectType": "library",
       "root": "libs/core",
@@ -201,6 +202,7 @@
     }
   },
   "cli": {
+    "analytics": "b2b8e2d4-77e9-4179-8be2-fd094438af89",
     "defaultCollection": "@nrwl/angular"
   },
   "schematics": {

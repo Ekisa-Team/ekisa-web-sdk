@@ -8,7 +8,7 @@
     "nx": "nx",
     "start": "ng serve",
     "build": "ng build",
-    "test:unit": "ng test",
+    "test:unit": "npx nx run-many --all --target=test",
     "test:e2e": "ng e2e",
     "lint": "nx workspace-lint && ng lint",
     "affected:apps": "nx affected:apps",

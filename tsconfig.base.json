@@ -15,8 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ekisa-sdk/addon-ui": ["libs/addon-ui/src/index.ts"],
-      "@ekisa-sdk/core": ["libs/core/src/index.ts"]
+      "@ekisa-sdk/addon-media-stream": ["libs/addon-media-stream/src/index.ts"],
+      "@ekisa-sdk/core": ["libs/core/src/index.ts"],
+      "@ekisa-sdk/theme": ["./theme/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

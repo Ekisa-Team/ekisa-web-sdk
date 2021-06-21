@@ -19,7 +19,7 @@
     }
   },
   "projects": {
-    "addon-ui": {
+    "addon-media-stream": {
       "tags": ["lib", "ui"]
     },
     "core": {
