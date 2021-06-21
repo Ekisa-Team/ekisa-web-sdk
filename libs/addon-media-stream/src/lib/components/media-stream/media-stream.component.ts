@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -14,7 +15,7 @@ import { MediaStreamOptions } from '../../interfaces/media-stream-options.interf
 import { MediaStreamActionType } from '../../types/media-stream-action.type';
 
 @Component({
-  selector: 'ekisa-sdk-media-stream[audio][video]',
+  selector: 'ekisa-sdk-media-stream',
   templateUrl: './media-stream.component.html',
   styleUrls: ['./media-stream.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,12 +24,11 @@ export class MediaStreamComponent implements OnInit, AfterViewInit {
   @ViewChild('video') videoRef!: ElementRef;
   @ViewChild('canvas') canvasRef!: ElementRef;
 
-  @Input() audio?: boolean;
-  @Input() video?: boolean | MediaTrackConstraintSet;
   @Input() options!: MediaStreamOptions;
 
   @Output() initialized = new EventEmitter<{ tracks: MediaStreamTrack[] }>();
   @Output() trackChanged = new EventEmitter<MediaStreamTrack>();
+  @Output() snapshotTaken = new EventEmitter<string>();
   @Output() catchError = new EventEmitter<string>();
 
   mediaStreamAction = MediaStreamAction;
@@ -43,10 +43,15 @@ export class MediaStreamComponent implements OnInit, AfterViewInit {
     TakeSnapshot: 'photo_camera',
   };
 
+  hasCams = false;
+  hasMics = false;
+
   audioIsOpened = false;
   videoIsOpened = false;
 
-  constructor() {}
+  snapshotAnimation = '';
+
+  constructor(private cdr: ChangeDetectorRef) {}
 
   get tracks(): MediaStreamTrack[] {
     return this.videoRef.nativeElement.srcObject.getTracks();
@@ -85,6 +90,15 @@ export class MediaStreamComponent implements OnInit, AfterViewInit {
     `;
   }
 
+  get canvasStyles(): string {
+    const { width, height } = this.options?.video || {};
+
+    return `
+      width: ${width ? `${width}px` : '100%'};
+      height: ${height ? `${height}px` : '100vh'};
+    `;
+  }
+
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
@@ -92,22 +106,37 @@ export class MediaStreamComponent implements OnInit, AfterViewInit {
   }
 
   onToggleAction(actionType: MediaStreamActionType): void {
-    if (actionType === 'audio') {
-      this.audioIsOpened = this.toggleOrSet(actionType);
-    } else if (actionType === 'video') {
-      this.videoIsOpened = this.toggleOrSet(actionType);
+    switch (true) {
+      case actionType === 'audio':
+        this.audioIsOpened = this.toggleOrSet(actionType);
+        break;
+
+      case actionType === 'video':
+        this.videoIsOpened = this.toggleOrSet(actionType);
+        break;
+
+      case actionType === 'snapshot':
+        this.takeSnapshot();
+        break;
     }
   }
 
   private setupDevices() {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      const constraints = {
-        audio: this.audio,
-        video: this.video,
-      };
-
       navigator.mediaDevices
-        .getUserMedia(constraints)
+        .enumerateDevices()
+        .then((devices) => {
+          const cams = devices.filter((device) => device.kind === 'videoinput');
+          const mics = devices.filter((device) => device.kind === 'audioinput');
+
+          this.hasCams = cams.length > 0;
+          this.hasMics = mics.length > 0;
+
+          return navigator.mediaDevices.getUserMedia({
+            audio: this.hasMics,
+            video: this.hasCams,
+          });
+        })
         .then((stream) => {
           this.videoRef.nativeElement.srcObject = stream;
 
@@ -136,5 +165,38 @@ export class MediaStreamComponent implements OnInit, AfterViewInit {
 
     this.trackChanged.emit(track);
     return isEnabled;
+  }
+
+  private takeSnapshot(): void {
+    this.animateSnapshot();
+    this.playSnapshotSound();
+
+    const image = this.videoRef.nativeElement;
+    const ctx = this.canvasRef.nativeElement.getContext('2d');
+
+    ctx.canvas.width = 1280;
+    ctx.canvas.height = 768;
+
+    ctx.drawImage(image, 0, 0, 1280, 768);
+
+    const base64 = this.canvasRef.nativeElement.toDataURL('image/png');
+
+    this.snapshotTaken.emit(base64);
+  }
+
+  private animateSnapshot(): void {
+    this.snapshotAnimation = 'animate-snapshot';
+
+    setTimeout(() => {
+      this.snapshotAnimation = '';
+      this.cdr.markForCheck();
+    }, 700);
+  }
+
+  private playSnapshotSound(): void {
+    const audio = new Audio();
+    audio.src = '../../../../../../assets/sounds/camera.mp3';
+    audio.load();
+    audio.play();
   }
 }

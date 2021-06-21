@@ -1,0 +1,20 @@
+.control {
+  @apply inline-flex items-center justify-center;
+  @apply px-4 py-2;
+  @apply font-semibold;
+  @apply rounded-xl;
+  @apply bg-black bg-opacity-30 backdrop-filter backdrop-blur-lg;
+}
+
+.control:hover:not(:disabled) {
+  @apply bg-opacity-40;
+}
+
+.control:focus:not(:disabled) {
+  @apply bg-black outline-none ring-4 bg-opacity-40;
+}
+
+.control:disabled {
+  @apply cursor-not-allowed;
+  @apply opacity-30;
+}
