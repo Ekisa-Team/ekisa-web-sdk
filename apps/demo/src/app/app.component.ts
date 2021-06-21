@@ -7,4 +7,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'demo';
+
+  onInitialized(e: any): void {
+    console.log(e);
+  }
+  onTrackChanged(e: any): void {
+    console.log(e);
+  }
+  onCatchError(e: any): void {
+    console.log(e);
+  }
 }
