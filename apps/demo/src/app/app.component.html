@@ -7,7 +7,11 @@
     controls: {
       showAudio: true,
       showVideo: true,
-      showSnapshot: true
+      showSnapshot: true,
+      position: 'right'
     }
   }"
+  (initialized)="onInitialized($event)"
+  (trackChanged)="onTrackChanged($event)"
+  (catchError)="onCatchError($event)"
 ></ekisa-sdk-media-stream>

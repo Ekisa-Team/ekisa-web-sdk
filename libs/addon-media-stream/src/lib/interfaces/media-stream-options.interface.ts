@@ -4,6 +4,7 @@ export interface MediaStreamOptions {
 
   controls: {
     showOutside?: boolean;
+    position?: 'left' | 'top' | 'right' | 'bottom';
 
     showAudio?: boolean;
     audioText?: string;

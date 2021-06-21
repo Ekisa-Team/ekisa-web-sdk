@@ -1,1 +1,1 @@
-export * from './lib/components/media-stream/media-stream.module';
+export * from './lib/media-stream.module';

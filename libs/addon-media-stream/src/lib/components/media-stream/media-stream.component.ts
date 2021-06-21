@@ -33,6 +33,8 @@ export class MediaStreamComponent implements OnInit, AfterViewInit {
 
   mediaStreamAction = MediaStreamAction;
 
+  streamInitialized = false;
+
   readonly iconMap: Record<keyof typeof MediaStreamAction, string> = {
     AudioOpened: 'volume_up',
     AudioClosed: 'volume_off',
@@ -74,6 +76,7 @@ export class MediaStreamComponent implements OnInit, AfterViewInit {
           this.toggleOrSet('audio', this.options.enterWithAudio);
           this.toggleOrSet('video', this.options.enterWithVideo);
 
+          this.streamInitialized = true;
           this.initialized.emit({ tracks: this.tracks });
         })
         .catch((error) => {

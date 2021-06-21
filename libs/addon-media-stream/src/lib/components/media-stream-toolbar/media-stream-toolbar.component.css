@@ -1,0 +1,34 @@
+.base-toolbar {
+  @apply px-4 py-2;
+  @apply text-gray-100 bg-gray-900;
+  @apply bg-opacity-30 backdrop-filter backdrop-blur-lg;
+  @apply rounded-xl;
+}
+
+.inside.vertical {
+  @apply inline-flex flex-col;
+  @apply absolute;
+  @apply inset-y-2;
+}
+
+.inside.horizontal {
+  @apply flex;
+  @apply absolute;
+  @apply inset-x-2;
+}
+
+.inside.vertical.left {
+  @apply left-2;
+}
+
+.inside.horizontal.top {
+  @apply top-2;
+}
+
+.inside.vertical.right {
+  @apply right-2;
+}
+
+.inside.horizontal.bottom {
+  @apply bottom-2;
+}
