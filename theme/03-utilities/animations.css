@@ -1,0 +1,11 @@
+.animate-snapshot {
+  animation-name: snapshot;
+  animation-duration: 700ms;
+  animation-timing-function: ease-out;
+}
+
+@keyframes snapshot {
+  50% {
+    opacity: 0.1;
+  }
+}

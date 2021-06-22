@@ -1,0 +1,15 @@
+<button
+  *ngIf="type"
+  class="control"
+  [title]="hint"
+  [disabled]="disabled"
+  (click)="onClick()"
+>
+  <span class="text-2xl material-icons">
+    {{ icon }}
+  </span>
+
+  <span *ngIf="text" class="ml-2">
+    {{ text }}
+  </span>
+</button>
