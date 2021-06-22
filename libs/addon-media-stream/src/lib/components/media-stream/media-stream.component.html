@@ -43,6 +43,7 @@
       <ekisa-sdk-media-stream-control
         *ngIf="controls.showSnapshot"
         type="snapshot"
+        [disabled]="!hasCams"
         [icon]="iconMap.TakeSnapshot"
         [text]="controls.snapshotText"
         [hint]="controls.snapshotHint ?? ''"

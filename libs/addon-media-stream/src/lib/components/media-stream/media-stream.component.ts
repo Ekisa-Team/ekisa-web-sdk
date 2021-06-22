@@ -168,16 +168,24 @@ export class MediaStreamComponent implements OnInit, AfterViewInit {
   }
 
   private takeSnapshot(): void {
-    this.animateSnapshot();
-    this.playSnapshotSound();
+    if (this.options?.snapshot?.animate) {
+      this.animateSnapshot();
+    }
+
+    if (this.options?.snapshot?.audioSrc) {
+      this.playSnapshotSound(this.options?.snapshot?.audioSrc);
+    }
 
     const image = this.videoRef.nativeElement;
     const ctx = this.canvasRef.nativeElement.getContext('2d');
 
-    ctx.canvas.width = 1280;
-    ctx.canvas.height = 768;
+    const width = this.options.video?.width || 1280;
+    const height = this.options.video?.width || 768;
 
-    ctx.drawImage(image, 0, 0, 1280, 768);
+    ctx.canvas.width = width;
+    ctx.canvas.height = height;
+
+    ctx.drawImage(image, 0, 0, width, height);
 
     const base64 = this.canvasRef.nativeElement.toDataURL('image/png');
 
@@ -193,9 +201,8 @@ export class MediaStreamComponent implements OnInit, AfterViewInit {
     }, 700);
   }
 
-  private playSnapshotSound(): void {
-    const audio = new Audio();
-    audio.src = '../../../../../../assets/sounds/camera.mp3';
+  private playSnapshotSound(src: string): void {
+    const audio = new Audio(src);
     audio.load();
     audio.play();
   }

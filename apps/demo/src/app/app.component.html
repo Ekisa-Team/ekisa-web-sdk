@@ -16,6 +16,10 @@
       showSnapshot: true,
       snapshotHint: 'Take a snapshot',
       position: 'bottom'
+    },
+    snapshot: {
+      audioSrc: '../assets/sounds/camera-shutter.mp3',
+      animate: true
     }
   }"
   objectFit="contain"
@@ -25,4 +29,4 @@
   (catchError)="onCatchError($event)"
 ></ekisa-sdk-media-stream>
 
-<img [src]="image" alt="" class="mx-auto mt-16" />
+<img [src]="image" alt="" class="mx-auto mt-16" width="400" height="400" />
