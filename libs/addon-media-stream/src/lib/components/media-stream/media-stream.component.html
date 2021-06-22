@@ -1,0 +1,66 @@
+<div
+  class="relative mx-auto space-y-2 {{ snapshotAnimation }}"
+  [style]="boxStyles"
+>
+  <video
+    #video
+    autoplay
+    class="relative block outline-none"
+    [style]="videoStyles"
+  ></video>
+
+  <canvas #canvas [style]="canvasStyles" class="hidden"></canvas>
+
+  <ng-container *ngIf="streamInitialized; else loading">
+    <ekisa-sdk-media-stream-toolbar
+      *ngIf="options?.controls as controls"
+      [position]="controls.position"
+      [showOutside]="controls.showOutside"
+      (toggle)="onToggleAction($event)"
+    >
+      <ekisa-sdk-media-stream-control
+        *ngIf="controls.showAudio"
+        type="audio"
+        [disabled]="!hasMics"
+        [icon]="audioIcon"
+        [text]="controls.audioText"
+        [hint]="controls.audioHint ?? ''"
+        (toggle)="onToggleAction($event)"
+      >
+      </ekisa-sdk-media-stream-control>
+
+      <ekisa-sdk-media-stream-control
+        *ngIf="controls.showVideo"
+        type="video"
+        [disabled]="!hasCams"
+        [icon]="videoIcon"
+        [text]="controls.videoText"
+        [hint]="controls.videoHint ?? ''"
+        (toggle)="onToggleAction($event)"
+      >
+      </ekisa-sdk-media-stream-control>
+
+      <ekisa-sdk-media-stream-control
+        *ngIf="controls.showSnapshot"
+        type="snapshot"
+        [disabled]="!hasCams || videoIcon === iconMap.VideoClosed"
+        [icon]="iconMap.TakeSnapshot"
+        [text]="controls.snapshotText"
+        [hint]="controls.snapshotHint ?? ''"
+        (toggle)="onToggleAction($event)"
+      >
+      </ekisa-sdk-media-stream-control>
+    </ekisa-sdk-media-stream-toolbar>
+  </ng-container>
+
+  <ng-template #loading>
+    <ekisa-sdk-media-stream-loader></ekisa-sdk-media-stream-loader>
+  </ng-template>
+
+  <span
+    *ngIf="streamInitialized && !hasCams"
+    class="absolute text-2xl transform -translate-x-1/2 -translate-y-1/2 text-gray-50 top-1/2 left-1/2"
+  >
+    {{ noCamsMessage }}
+  </span>
+</div>

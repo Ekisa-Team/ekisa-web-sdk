@@ -19,6 +19,9 @@
     }
   },
   "projects": {
+    "addon-media-stream": {
+      "tags": ["lib", "ui"]
+    },
     "core": {
       "tags": ["lib"]
     },

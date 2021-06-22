@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @import url('./01-base/fonts.css');
+}
+
+@layer components {
+}
+
+@layer utilities {
+  @import url('./03-utilities/animations.css');
+}

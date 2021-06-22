@@ -1,6 +1,49 @@
 {
   "version": 1,
   "projects": {
+    "addon-media-stream": {
+      "projectType": "library",
+      "root": "libs/addon-media-stream",
+      "sourceRoot": "libs/addon-media-stream/src",
+      "prefix": "ekisa-sdk",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "outputs": ["dist/libs/addon-media-stream"],
+          "options": {
+            "project": "libs/addon-media-stream/ng-package.json",
+            "styles": ["./theme/styles.css"]
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/addon-media-stream/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/addon-media-stream/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/addon-media-stream"],
+          "options": {
+            "jestConfig": "libs/addon-media-stream/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/addon-media-stream/src/**/*.ts",
+              "libs/addon-media-stream/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+
     "core": {
       "projectType": "library",
       "root": "libs/core",
@@ -58,7 +101,7 @@
             "polyfills": "apps/demo/src/polyfills.ts",
             "tsConfig": "apps/demo/tsconfig.app.json",
             "assets": ["apps/demo/src/favicon.ico", "apps/demo/src/assets"],
-            "styles": ["apps/demo/src/styles.css"],
+            "styles": ["./theme/styles.css"],
             "scripts": []
           },
           "configurations": {
@@ -159,6 +202,7 @@
     }
   },
   "cli": {
+    "analytics": "b2b8e2d4-77e9-4179-8be2-fd094438af89",
     "defaultCollection": "@nrwl/angular"
   },
   "schematics": {
