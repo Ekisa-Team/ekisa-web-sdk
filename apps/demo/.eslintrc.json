@@ -9,6 +9,12 @@
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
+        "@angular-eslint/component-class-suffix": [
+          "error",
+          {
+            "suffixes": ["Component", "Page"]
+          }
+        ],
         "@angular-eslint/directive-selector": [
           "error",
           {
@@ -24,7 +30,9 @@
             "prefix": "ekisa-sdk",
             "style": "kebab-case"
           }
-        ]
+        ],
+        "@typescript-eslint/no-empty-function": "off",
+        "@angular-eslint/no-empty-lifecycle-method": "off"
       }
     },
     {

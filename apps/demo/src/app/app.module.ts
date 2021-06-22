@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { MediaStreamModule } from '@ekisa-sdk/addon-media-stream';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, MediaStreamModule],
+  imports: [BrowserModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent],
 })

@@ -26,7 +26,9 @@ export class MediaStreamComponent implements OnInit, AfterViewInit {
 
   @Input() options!: MediaStreamOptions;
 
-  @Output() initialized = new EventEmitter<{ tracks: MediaStreamTrack[] }>();
+  @Input() noCamsMessage = `We couldn't find your camera`;
+
+  @Output() enumerateDevices = new EventEmitter<MediaDeviceInfo[]>();
   @Output() trackChanged = new EventEmitter<MediaStreamTrack>();
   @Output() snapshotTaken = new EventEmitter<string>();
   @Output() catchError = new EventEmitter<string>();
@@ -126,6 +128,8 @@ export class MediaStreamComponent implements OnInit, AfterViewInit {
       navigator.mediaDevices
         .enumerateDevices()
         .then((devices) => {
+          this.enumerateDevices.emit(devices);
+
           const cams = devices.filter((device) => device.kind === 'videoinput');
           const mics = devices.filter((device) => device.kind === 'audioinput');
 
@@ -146,7 +150,6 @@ export class MediaStreamComponent implements OnInit, AfterViewInit {
           this.videoIsOpened = !!this.options.enterWithVideo;
 
           this.streamInitialized = true;
-          this.initialized.emit({ tracks: this.tracks });
         })
         .catch((error) => {
           this.catchError.emit(error);

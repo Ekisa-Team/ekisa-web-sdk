@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="overflow-hidden rounded-xl">
+    <ekisa-sdk-media-stream
+      noCamsMessage="We couldn't find any cameras on your device"
+      [options]="mediaStreamOptions"
+      (enumerateDevices)="onEnumerateDevices($event)"
+      (trackChanged)="onTrackChanged($event)"
+      (snapshotTaken)="onSnapshotTaken($event)"
+      (catchError)="onCatchError($event)"
+    ></ekisa-sdk-media-stream>
+  </div>
+
+  <img
+    [src]="image"
+    alt=""
+    class="max-w-3xl p-4 mx-auto my-24 mt-16 border-8 border-gray-200 max-h-96"
+  />
+</div>
