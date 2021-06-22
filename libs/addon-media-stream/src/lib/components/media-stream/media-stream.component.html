@@ -43,7 +43,7 @@
       <ekisa-sdk-media-stream-control
         *ngIf="controls.showSnapshot"
         type="snapshot"
-        [disabled]="!hasCams"
+        [disabled]="!hasCams || videoIcon === iconMap.VideoClosed"
         [icon]="iconMap.TakeSnapshot"
         [text]="controls.snapshotText"
         [hint]="controls.snapshotHint ?? ''"
@@ -58,9 +58,9 @@
   </ng-template>
 
   <span
-    *ngIf="!hasCams"
+    *ngIf="streamInitialized && !hasCams"
     class="absolute text-2xl transform -translate-x-1/2 -translate-y-1/2 text-gray-50 top-1/2 left-1/2"
   >
-    We couldn't find your camera
+    {{ noCamsMessage }}
   </span>
 </div>
