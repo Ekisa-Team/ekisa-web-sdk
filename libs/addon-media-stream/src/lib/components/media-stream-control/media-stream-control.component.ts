@@ -27,6 +27,9 @@ export class MediaStreamControlComponent implements OnInit {
   @Input()
   hint!: string | undefined;
 
+  @Input()
+  disabled!: boolean;
+
   @Output() toggle = new EventEmitter<MediaStreamActionType>();
 
   constructor() {}

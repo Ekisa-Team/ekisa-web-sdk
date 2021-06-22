@@ -1,7 +1,15 @@
-<div class="relative space-y-2">
-  <div class="overflow-hidden rounded-xl">
-    <video #video autoplay></video>
-  </div>
+<div
+  class="relative mx-auto space-y-2 {{ snapshotAnimation }}"
+  [style]="boxStyles"
+>
+  <video
+    #video
+    autoplay
+    class="relative block outline-none"
+    [style]="videoStyles"
+  ></video>
+
+  <canvas #canvas [style]="canvasStyles" class="hidden"></canvas>
 
   <ng-container *ngIf="streamInitialized; else loading">
     <ekisa-sdk-media-stream-toolbar
@@ -13,7 +21,8 @@
       <ekisa-sdk-media-stream-control
         *ngIf="controls.showAudio"
         type="audio"
-        [icon]="iconMap.AudioOpened"
+        [disabled]="!hasMics"
+        [icon]="audioIcon"
         [text]="controls.audioText"
         [hint]="controls.audioHint ?? ''"
         (toggle)="onToggleAction($event)"
@@ -23,9 +32,10 @@
       <ekisa-sdk-media-stream-control
         *ngIf="controls.showVideo"
         type="video"
-        [icon]="iconMap.AudioOpened"
-        [text]="controls.audioText"
-        [hint]="controls.audioHint ?? ''"
+        [disabled]="!hasCams"
+        [icon]="videoIcon"
+        [text]="controls.videoText"
+        [hint]="controls.videoHint ?? ''"
         (toggle)="onToggleAction($event)"
       >
       </ekisa-sdk-media-stream-control>
@@ -33,9 +43,10 @@
       <ekisa-sdk-media-stream-control
         *ngIf="controls.showSnapshot"
         type="snapshot"
-        [icon]="iconMap.AudioOpened"
-        [text]="controls.audioText"
-        [hint]="controls.audioHint ?? ''"
+        [disabled]="!hasCams"
+        [icon]="iconMap.TakeSnapshot"
+        [text]="controls.snapshotText"
+        [hint]="controls.snapshotHint ?? ''"
         (toggle)="onToggleAction($event)"
       >
       </ekisa-sdk-media-stream-control>
@@ -43,27 +54,13 @@
   </ng-container>
 
   <ng-template #loading>
-    <div class="grid place-items-center">
-      <svg
-        class="w-12 h-12 animate-spin"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <circle
-          class="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          stroke-width="4"
-        ></circle>
-        <path
-          class="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-        ></path>
-      </svg>
-    </div>
+    <ekisa-sdk-media-stream-loader></ekisa-sdk-media-stream-loader>
   </ng-template>
+
+  <span
+    *ngIf="!hasCams"
+    class="absolute text-2xl transform -translate-x-1/2 -translate-y-1/2 text-gray-50 top-1/2 left-1/2"
+  >
+    We couldn't find your camera
+  </span>
 </div>

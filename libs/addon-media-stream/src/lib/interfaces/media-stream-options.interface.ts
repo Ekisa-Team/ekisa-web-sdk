@@ -2,7 +2,19 @@ export interface MediaStreamOptions {
   enterWithAudio?: boolean;
   enterWithVideo?: boolean;
 
-  controls: {
+  video?: {
+    objectFit?: 'contain' | 'fill' | 'cover' | 'scale-down' | 'none';
+    width?: number;
+    height?: number;
+    framesColor?: string;
+  };
+
+  snapshot?: {
+    animate?: boolean;
+    audioSrc?: string;
+  };
+
+  controls?: {
     showOutside?: boolean;
     position?: 'left' | 'top' | 'right' | 'bottom';
 

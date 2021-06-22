@@ -1,14 +1,15 @@
 <button
   *ngIf="type"
-  class="inline-flex items-center justify-center px-4 py-2 font-semibold hover:bg-gray-900 rounded-xl bg-opacity-30 backdrop-filter backdrop-blur-lg focus:outline-none focus:ring-4 focus:bg-gray-900"
+  class="control"
   [title]="hint"
+  [disabled]="disabled"
   (click)="onClick()"
 >
   <span class="text-2xl material-icons">
     {{ icon }}
   </span>
 
-  <span class="ml-2">
+  <span *ngIf="text" class="ml-2">
     {{ text }}
   </span>
 </button>
