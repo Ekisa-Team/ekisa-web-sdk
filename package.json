@@ -1,6 +1,22 @@
 {
   "name": "ekisa-web-sdk",
   "version": "0.1.1",
+  "description": "🛠️ Extensible, modular & featured set of tools for web development",
+  "author": "juanmesa2097@gmail.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ekisa-Team/ekisa-web-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Ekisa-Team/ekisa-web-sdk/issues"
+  },
+  "homepage": "https://github.com/Ekisa-Team/ekisa-web-sdk",
+  "keywords": [
+    "nx",
+    "angular",
+    "sdk",
+    "websdk"
+  ],
   "license": "MIT",
   "scripts": {
     "ng": "nx",
