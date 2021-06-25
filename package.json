@@ -31,6 +31,7 @@
     "test:unit": "nx run-many --all --target=test",
     "test:e2e": "ng e2e",
     "lint": "nx workspace-lint && ng lint",
+    "release": "standard-version",
     "affected:apps": "nx affected:apps",
     "affected:libs": "nx affected:libs",
     "affected:build": "nx affected:build",
@@ -46,6 +47,13 @@
     "workspace-generator": "nx workspace-generator",
     "dep-graph": "nx dep-graph",
     "help": "nx help"
+  },
+  "standard-version": {
+    "skip": {
+      "bump": true,
+      "commit": true,
+      "tag": true
+    }
   },
   "dependencies": {
     "@angular/animations": "12.0.5",
