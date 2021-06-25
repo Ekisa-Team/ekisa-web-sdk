@@ -15,7 +15,7 @@ import { MediaStreamOptions } from '../../interfaces/media-stream-options.interf
 import { MediaStreamActionType } from '../../types/media-stream-action.type';
 
 @Component({
-  selector: 'ekisa-sdk-media-stream',
+  selector: 'ews-media-stream',
   templateUrl: './media-stream.component.html',
   styleUrls: ['./media-stream.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -108,16 +108,16 @@ export class MediaStreamComponent implements OnInit, AfterViewInit {
   }
 
   onToggleAction(actionType: MediaStreamActionType): void {
-    switch (true) {
-      case actionType === 'audio':
+    switch (actionType) {
+      case 'audio':
         this.audioIsOpened = this.toggleOrSet(actionType);
         break;
 
-      case actionType === 'video':
+      case 'video':
         this.videoIsOpened = this.toggleOrSet(actionType);
         break;
 
-      case actionType === 'snapshot':
+      case 'snapshot':
         this.takeSnapshot();
         break;
     }

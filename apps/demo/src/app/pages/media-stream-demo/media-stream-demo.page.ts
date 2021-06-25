@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MediaStreamOptions } from '@ekisa-sdk/addon-media-stream';
+import { MediaStreamOptions } from '@ekisa-web-sdk/addon-media-stream';
 
 @Component({
   templateUrl: './media-stream-demo.page.html',
