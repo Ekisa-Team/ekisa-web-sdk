@@ -13,7 +13,7 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "ekisaSdk",
+            "prefix": "ews",
             "style": "camelCase"
           }
         ],
@@ -21,7 +21,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "ekisa-sdk",
+            "prefix": "ews",
             "style": "kebab-case"
           }
         ],

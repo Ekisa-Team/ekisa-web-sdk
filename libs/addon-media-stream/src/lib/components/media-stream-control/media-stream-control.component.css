@@ -3,7 +3,7 @@
   @apply px-4 py-2;
   @apply font-semibold;
   @apply rounded-xl;
-  @apply bg-black bg-opacity-30 backdrop-filter backdrop-blur-lg;
+  @apply bg-red-200 bg-opacity-30 backdrop-filter backdrop-blur-lg;
 }
 
 .control:hover:not(:disabled) {

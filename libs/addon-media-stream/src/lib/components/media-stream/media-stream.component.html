@@ -12,13 +12,13 @@
   <canvas #canvas [style]="canvasStyles" class="hidden"></canvas>
 
   <ng-container *ngIf="streamInitialized; else loading">
-    <ekisa-sdk-media-stream-toolbar
+    <ews-media-stream-toolbar
       *ngIf="options?.controls as controls"
       [position]="controls.position"
       [showOutside]="controls.showOutside"
       (toggle)="onToggleAction($event)"
     >
-      <ekisa-sdk-media-stream-control
+      <ews-media-stream-control
         *ngIf="controls.showAudio"
         type="audio"
         [disabled]="!hasMics"
@@ -27,9 +27,9 @@
         [hint]="controls.audioHint ?? ''"
         (toggle)="onToggleAction($event)"
       >
-      </ekisa-sdk-media-stream-control>
+      </ews-media-stream-control>
 
-      <ekisa-sdk-media-stream-control
+      <ews-media-stream-control
         *ngIf="controls.showVideo"
         type="video"
         [disabled]="!hasCams"
@@ -38,9 +38,9 @@
         [hint]="controls.videoHint ?? ''"
         (toggle)="onToggleAction($event)"
       >
-      </ekisa-sdk-media-stream-control>
+      </ews-media-stream-control>
 
-      <ekisa-sdk-media-stream-control
+      <ews-media-stream-control
         *ngIf="controls.showSnapshot"
         type="snapshot"
         [disabled]="!hasCams || videoIcon === iconMap.VideoClosed"
@@ -49,12 +49,12 @@
         [hint]="controls.snapshotHint ?? ''"
         (toggle)="onToggleAction($event)"
       >
-      </ekisa-sdk-media-stream-control>
-    </ekisa-sdk-media-stream-toolbar>
+      </ews-media-stream-control>
+    </ews-media-stream-toolbar>
   </ng-container>
 
   <ng-template #loading>
-    <ekisa-sdk-media-stream-loader></ekisa-sdk-media-stream-loader>
+    <ews-media-stream-loader></ews-media-stream-loader>
   </ng-template>
 
   <span

@@ -1,13 +1,13 @@
 <div class="container">
   <div class="overflow-hidden rounded-xl">
-    <ekisa-sdk-media-stream
+    <ews-media-stream
       noCamsMessage="We couldn't find any cameras on your device"
       [options]="mediaStreamOptions"
       (enumerateDevices)="onEnumerateDevices($event)"
       (trackChanged)="onTrackChanged($event)"
       (snapshotTaken)="onSnapshotTaken($event)"
       (catchError)="onCatchError($event)"
-    ></ekisa-sdk-media-stream>
+    ></ews-media-stream>
   </div>
 
   <img

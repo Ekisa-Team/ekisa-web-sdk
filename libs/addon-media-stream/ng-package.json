@@ -3,5 +3,6 @@
   "dest": "../../dist/libs/addon-media-stream",
   "lib": {
     "entryFile": "src/index.ts"
-  }
+  },
+  "assets": ["../../theme/styles.css"]
 }
