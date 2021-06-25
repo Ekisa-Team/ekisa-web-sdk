@@ -1,6 +1,6 @@
 {
   "name": "ekisa-web-sdk",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "🛠️ Extensible, modular & featured set of tools for web development",
   "author": "juanmesa2097@gmail.com",
   "repository": {
@@ -32,6 +32,7 @@
     "release:patch": "standard-version --release-as patch",
     "release:minor": "standard-version --release-as minor",
     "release:major": "standard-version --release-as major",
+    "publish:addon-media-stream": "cd dist/libs/addon-media-stream",
     "test:unit": "nx run-many --all --target=test",
     "test:e2e": "ng e2e",
     "lint": "nx workspace-lint && ng lint",
