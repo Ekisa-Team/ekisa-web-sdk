@@ -1,5 +1,5 @@
 {
-  "npmScope": "ekisa-sdk",
+  "npmScope": "ekisa-web-sdk",
   "affected": {
     "defaultBase": "master"
   },

@@ -9,7 +9,7 @@ import {
 import { MediaStreamActionType } from '../../types/media-stream-action.type';
 
 @Component({
-  selector: 'ekisa-sdk-media-stream-toolbar',
+  selector: 'ews-media-stream-toolbar',
   templateUrl: './media-stream-toolbar.component.html',
   styleUrls: ['./media-stream-toolbar.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,

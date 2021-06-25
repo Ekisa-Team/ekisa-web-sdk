@@ -15,7 +15,7 @@ import { MediaStreamOptions } from '../../interfaces/media-stream-options.interf
 import { MediaStreamActionType } from '../../types/media-stream-action.type';
 
 @Component({
-  selector: 'ekisa-sdk-media-stream',
+  selector: 'ews-media-stream',
   templateUrl: './media-stream.component.html',
   styleUrls: ['./media-stream.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,

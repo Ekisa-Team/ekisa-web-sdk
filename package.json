@@ -1,5 +1,5 @@
 {
-  "name": "ekisa-sdk",
+  "name": "ekisa-web-sdk",
   "version": "0.1.1",
   "license": "MIT",
   "scripts": {
@@ -8,11 +8,15 @@
     "nx": "nx",
     "start": "ng serve",
     "build": "ng build",
+    "build:all": "nx run-many --target=build --all",
+    "build:app:demo": "nx build demo",
+    "build:lib:core": "nx build demo",
+    "build:lib:addon-media-stream": "nx build addon-media-stream",
     "release": "standard-version",
     "release:patch": "standard-version --release-as patch",
     "release:minor": "standard-version --release-as minor",
     "release:major": "standard-version --release-as major",
-    "test:unit": "npx nx run-many --all --target=test",
+    "test:unit": "nx run-many --all --target=test",
     "test:e2e": "ng e2e",
     "lint": "nx workspace-lint && ng lint",
     "affected:apps": "nx affected:apps",

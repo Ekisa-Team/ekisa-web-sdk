@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'ekisa-sdk-root',
+  selector: 'ews-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })

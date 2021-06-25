@@ -5,14 +5,13 @@
       "projectType": "library",
       "root": "libs/addon-media-stream",
       "sourceRoot": "libs/addon-media-stream/src",
-      "prefix": "ekisa-sdk",
+      "prefix": "ews",
       "architect": {
         "build": {
           "builder": "@nrwl/angular:package",
           "outputs": ["dist/libs/addon-media-stream"],
           "options": {
-            "project": "libs/addon-media-stream/ng-package.json",
-            "styles": ["./theme/styles.css"]
+            "project": "libs/addon-media-stream/ng-package.json"
           },
           "configurations": {
             "production": {
@@ -48,7 +47,7 @@
       "projectType": "library",
       "root": "libs/core",
       "sourceRoot": "libs/core/src",
-      "prefix": "ekisa-sdk",
+      "prefix": "ews",
       "architect": {
         "build": {
           "builder": "@nrwl/angular:package",
@@ -89,7 +88,7 @@
       "projectType": "application",
       "root": "apps/demo",
       "sourceRoot": "apps/demo/src",
-      "prefix": "ekisa-sdk",
+      "prefix": "ews",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
