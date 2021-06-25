@@ -108,16 +108,16 @@ export class MediaStreamComponent implements OnInit, AfterViewInit {
   }
 
   onToggleAction(actionType: MediaStreamActionType): void {
-    switch (true) {
-      case actionType === 'audio':
+    switch (actionType) {
+      case 'audio':
         this.audioIsOpened = this.toggleOrSet(actionType);
         break;
 
-      case actionType === 'video':
+      case 'video':
         this.videoIsOpened = this.toggleOrSet(actionType);
         break;
 
-      case actionType === 'snapshot':
+      case 'snapshot':
         this.takeSnapshot();
         break;
     }
