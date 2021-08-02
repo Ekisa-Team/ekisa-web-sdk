@@ -15,7 +15,6 @@ import { MediaStreamActionType } from '../../types/media-stream-action.type';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MediaStreamToolbarComponent implements OnInit {
-  @Input() position!: string | undefined;
   @Input() showOutside!: boolean | undefined;
 
   @Output() toggle = new EventEmitter<MediaStreamActionType>();
@@ -25,11 +24,7 @@ export class MediaStreamToolbarComponent implements OnInit {
   get toolbarClasses() {
     const toolbarPosition = this.showOutside ? 'outside' : 'inside';
 
-    const layout = ['left', 'right'].includes(this.position || '')
-      ? 'vertical space-y-3'
-      : 'horizontal space-x-3';
-
-    return `${toolbarPosition} ${layout}`;
+    return `${toolbarPosition}`;
   }
 
   ngOnInit(): void {}
