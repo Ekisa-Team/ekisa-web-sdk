@@ -82,10 +82,10 @@ export class MediaStreamComponent implements OnInit, AfterViewInit {
   }
 
   get videoStyles(): string {
-    const { width, height, objectFit, framesColor } = this.options?.video || {};
+    const { height, objectFit, framesColor } = this.options?.video || {};
 
     return `
-      width: ${width ? `${width}px` : '100%'};
+      width: ${'100%'};
       height: ${height ? `${height}px` : '100vh'};
       object-fit: ${objectFit || 'contain'};
       background-color: ${framesColor || '#333'}

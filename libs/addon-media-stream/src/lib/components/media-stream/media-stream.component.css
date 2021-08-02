@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+.wrapper {
+  position: relative;
+  margin: 0 auto;
+}
+
+.video {
+  position: relative;
+  display: block;
+  outline: none;
+}
+
+.canvas {
+  display: none;
+}
+
+.animate-snapshot {
+  animation-name: snapshot;
+  animation-duration: 700ms;
+  animation-timing-function: ease-out;
+}
+
+.stream-text {
+  position: absolute;
+  font-size: 1.5rem;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%);
+}
+
+@keyframes snapshot {
+  50% {
+    opacity: 0.1;
+  }
+}

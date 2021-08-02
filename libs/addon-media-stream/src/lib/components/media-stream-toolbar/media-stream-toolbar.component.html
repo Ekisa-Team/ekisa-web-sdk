@@ -1,11 +1,3 @@
-<div
-  class="base-toolbar {{ toolbarClasses }}"
-  [ngClass]="{
-    left: position === 'left',
-    top: position === 'top',
-    right: position === 'right',
-    bottom: position === 'bottom'
-  }"
->
+<div class="base-toolbar {{ toolbarClasses }}">
   <ng-content></ng-content>
 </div>

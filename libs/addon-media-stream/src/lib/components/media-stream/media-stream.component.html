@@ -1,20 +1,11 @@
-<div
-  class="relative mx-auto space-y-2 {{ snapshotAnimation }}"
-  [style]="boxStyles"
->
-  <video
-    #video
-    autoplay
-    class="relative block outline-none"
-    [style]="videoStyles"
-  ></video>
+<div class="wrapper {{ snapshotAnimation }}" [style]="boxStyles">
+  <video #video autoplay class="video" [style]="videoStyles"></video>
 
-  <canvas #canvas [style]="canvasStyles" class="hidden"></canvas>
+  <canvas #canvas [style]="canvasStyles" class="canvas"></canvas>
 
   <ng-container *ngIf="streamInitialized; else loading">
     <ews-media-stream-toolbar
       *ngIf="options?.controls as controls"
-      [position]="controls.position"
       [showOutside]="controls.showOutside"
       (toggle)="onToggleAction($event)"
     >
@@ -57,10 +48,7 @@
     <ews-media-stream-loader></ews-media-stream-loader>
   </ng-template>
 
-  <span
-    *ngIf="streamInitialized && !hasCams"
-    class="absolute text-2xl transform -translate-x-1/2 -translate-y-1/2 text-gray-50 top-1/2 left-1/2"
-  >
+  <span *ngIf="streamInitialized && !hasCams" class="stream-text">
     {{ noCamsMessage }}
   </span>
 </div>

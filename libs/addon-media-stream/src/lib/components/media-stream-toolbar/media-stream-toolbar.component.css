@@ -1,34 +1,71 @@
 .base-toolbar {
-  @apply px-4 py-2;
-  @apply text-gray-100 bg-gray-900;
-  @apply bg-opacity-30 backdrop-filter backdrop-blur-lg;
-  @apply rounded-xl;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  color: #f3f4f6;
+  background-color: #1c1e2e;
+  border-radius: 0.75rem;
 }
 
-.inside.vertical {
-  @apply inline-flex flex-col;
-  @apply absolute;
-  @apply inset-y-2;
+.base-toolbar.inside {
+  width: 70%;
+  position: absolute;
+  right: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0.5rem;
+}
+
+.base-toolbar.outside {
+  margin-top: 0.5rem;
+}
+
+/* .inside.vertical {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0.5rem;
+  bottom: 0.5rem;
 }
 
 .inside.horizontal {
-  @apply flex;
-  @apply absolute;
-  @apply inset-x-2;
-}
+  display: flex;
+  position: absolute;
+  left: 0.5rem;
+  right: 0.5rem;
+} */
 
-.inside.vertical.left {
-  @apply left-2;
-}
+/* .inside.vertical.left {
+  left: 0.5rem;
+} */
 
-.inside.horizontal.top {
-  @apply top-2;
-}
+/* .inside.horizontal.top {
+  top: 0.5rem;
+} */
 
-.inside.vertical.right {
-  @apply right-2;
-}
+/* .inside.vertical.right {
+  right: 0.5rem;
+} */
 
-.inside.horizontal.bottom {
-  @apply bottom-2;
-}
+/* .inside.horizontal.bottom {
+  bottom: 0.5rem;
+} */
+
+/* .outside.vertical.left {
+  margin-right: 0.5rem;
+  display: flex;
+  flex-direction: column;
+} */
+
+/* .outside.horizontal.top {
+  margin-bottom: 0.5rem;
+} */
+
+/* .outside.vertical.right {
+  margin-left: 0.5rem;
+  display: flex;
+  flex-direction: column;
+} */
+
+/* .outside.horizontal.bottom {
+  margin-top: 0.5rem;
+} */
