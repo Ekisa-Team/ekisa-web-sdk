@@ -15,8 +15,13 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ekisa-web-sdk/addon-media-stream": ["libs/addon-media-stream/src/index.ts"],
-      "@ekisa-web-sdk/core": ["libs/core/src/index.ts"]      
+      "@ekisa-web-sdk/addon-media-stream": [
+        "libs/addon-media-stream/src/index.ts"
+      ],
+      "@ekisa-web-sdk/addon-wacom-signature": [
+        "libs/addon-wacom-signature/src/index.ts"
+      ],
+      "@ekisa-web-sdk/core": ["libs/core/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

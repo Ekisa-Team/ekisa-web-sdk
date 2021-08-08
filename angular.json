@@ -42,7 +42,47 @@
         }
       }
     },
-
+    "addon-wacom-signature": {
+      "projectType": "library",
+      "root": "libs/addon-wacom-signature",
+      "sourceRoot": "libs/addon-wacom-signature/src",
+      "prefix": "ews",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "outputs": ["dist/libs/addon-wacom-signature"],
+          "options": {
+            "project": "libs/addon-wacom-signature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/addon-wacom-signature/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/addon-wacom-signature/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/addon-wacom-signature"],
+          "options": {
+            "jestConfig": "libs/addon-wacom-signature/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/addon-wacom-signature/src/**/*.ts",
+              "libs/addon-wacom-signature/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "core": {
       "projectType": "library",
       "root": "libs/core",
