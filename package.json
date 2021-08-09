@@ -13,6 +13,7 @@
     "build:app:demo": "nx build demo",
     "build:lib:core": "nx build core",
     "build:lib:addon-media-stream": "nx build addon-media-stream",
+    "build:lib:addon-wacom-signature": "nx build addon-wacom-signature",
     "test:unit": "nx run-many --all --target=test",
     "test:e2e": "ng e2e",
     "lint": "nx workspace-lint && ng lint",
