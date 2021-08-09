@@ -13,7 +13,7 @@ import {
 } from '@angular/core';
 import { RenderBitmapResult } from '../../types/options.types.js';
 import { LICENCEKEY, SERVICEPORT } from '../../wacom/SigCaptX-Globals';
-import { JSONreq, WacomGSS_SignatureSDK } from '../../wacom/wgssSigCaptX.js';
+import { JSONreq, WacomGSS_SignatureSDK } from '../../wacom/wgssSigCaptX';
 
 declare global {
   interface Window {
@@ -28,7 +28,7 @@ window.JSONreq = JSONreq;
   selector: 'ews-wacom-signature',
   templateUrl: './wacom-signature.component.html',
   styleUrls: ['./wacom-signature.component.css'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WacomSignatureComponent {
   @ViewChild('canvas') canvas!: ElementRef<HTMLCanvasElement>;
