@@ -1,4 +1,6 @@
-﻿/* eslint-disable @typescript-eslint/no-unused-vars */
+﻿/* eslint-disable prefer-const */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-this-alias */
 /* eslint-disable no-undef */
@@ -10,13 +12,22 @@
 //==============================================================================
 // Loosely based on https://github.com/robertodecurnex/J50Npi
 export const JSONreq = {
-  map: {},
+  map: {} as any,
   counter: 0,
-  getJSON: function (e, t, n) {
-    var a = e + (e.indexOf('?') + 1 ? '&' : '?'),
+  getJSON: function (
+    e: string | string[],
+    t: {
+      [x: string]: string | number | boolean;
+      script_name: string;
+      _rand: number;
+      callback: string;
+    },
+    n: any,
+  ) {
+    let a = e + (e.indexOf('?') + 1 ? '&' : '?'),
       c = document.getElementsByTagName('head')[0],
       s = document.createElement('script'),
-      m = [],
+      m: never[] = [],
       r = '',
       i = 'json-' + this.counter;
     this.counter++,
@@ -24,18 +35,18 @@ export const JSONreq = {
       (t._rand = Math.random()),
       (this.map[i] = n),
       (t.callback = 'JSONreq.success');
-    for (r in t) m.push(r + '=' + encodeURIComponent(t[r]));
+    for (r in t) m.push((r + '=' + encodeURIComponent(t[r])) as never);
     (a += m.join('&')),
       (s.type = 'text/javascript'),
       (s.src = a),
       (s.id = i),
       c.appendChild(s);
   },
-  success: function (e) {
-    var t = e.script_name;
+  success: function (e: { script_name: any }) {
+    const t = e.script_name;
     delete e.script_name, this.map[t](e);
-    var n = document.getElementsByTagName('head')[0],
-      a = document.getElementById(t);
+    const n = document.getElementsByTagName('head')[0],
+      a = document.getElementById(t) as any;
     n.removeChild(a), delete this.map.script_name;
   },
 };
@@ -82,17 +93,389 @@ export const JSONreq = {
 export class WacomGSS_SignatureSDK {
   _onDetectRunning;
   service_port;
+  running: any;
+  session: null;
+  service_detected: boolean;
+  RBFlags: {
+    //RenderOutputBinary : 2048,    // Not supported in SigCaptX
+    //RenderOutputFilename : 4096,  // Not supported in SigCaptX
+    RenderOutputPicture: number;
+    RenderOutputBase64: number;
+    RenderBackgroundTransparent: number;
+    RenderColor1BPP: number;
+    RenderColor24BPP: number;
+    RenderColor32BPP: number;
+    RenderColorAntiAlias: number;
+    RenderEncodeData: number;
+    RenderWatermark: number;
+    RenderClipped: number;
+    RenderRelative: number;
+  };
+  IntegrityStatus: {
+    IntegrityOK: number;
+    IntegrityFail: number;
+    IntegrityMissing: number;
+    IntegrityWrongType: number;
+    IntegrityInsufficientData: number;
+    IntegrityUncertain: number;
+    IntegrityUnsupported: number;
+  };
+  HashType: {
+    HashNone: number;
+    HashMD5: number;
+    HashSHA1: number;
+    HashSHA224: number;
+    HashSHA256: number;
+    HashSHA384: number;
+    HashSHA512: number;
+  };
+  KeyType: {
+    KeyNone: number;
+    KeyMD5: number;
+    KeyMD5MAC: number;
+    KeySHA1: number;
+    KeySHA224: number;
+    KeySHA256: number;
+    KeySHA384: number;
+    KeySHA512: number;
+    KeyCAPICOM: number;
+  };
+  SignedData: {
+    DataGood: number;
+    DataNoHash: number;
+    DataBadType: number;
+    DataBadHash: number;
+    DataError: number;
+    DataUncertain: number;
+    DataSigMoved: number;
+  };
+  CaptData: {
+    CaptDigitizer: number;
+    CaptDigitizerDriver: number;
+    CaptMachineOS: number;
+    CaptNetworkCard: number;
+  };
+  DynamicCaptureResult: {
+    DynCaptOK: number;
+    DynCaptCancel: number;
+    DynCaptPadError: number;
+    DynCaptError: number;
+    DynCaptNotLicensed: number;
+    DynCaptAbort: number;
+    DynCaptIntegrityKeyInvalid: number;
+  };
+  TimeZone: { TimeLocal: number; TimeGMT: number; TimeUTC: number };
+  DisplayMode: { DspForceFit: number; DspUseZoom: number; DspBestFit: number };
+  ShowText: {
+    TxtDontShow: number;
+    TxtShowLeft: number;
+    TxtShowCenter: number;
+    TxtShowRight: number;
+  };
+  ObjectType: {
+    ObjectText: number;
+    ObjectButton: number;
+    ObjectCheckbox: number;
+    ObjectSignature: number;
+    ObjectInput: number;
+    ObjectInputEcho: number;
+    ObjectHash: number;
+    ObjectImage: number;
+    ObjectDisplayAtShutdown: number;
+    ObjectInking: number;
+    ObjectRadioButton: number;
+  };
+  TextOptions: {
+    TextAlignLeft: number;
+    TextAlignRight: number;
+    TextAlignCentre: number;
+    TextAlignJustify: number;
+  };
+  ButtonOptions: {
+    BtnAlignCentre: number;
+    BtnAlignMiddle: number;
+    BtnAlignLeft: number;
+    BtnAlignRight: number;
+    BtnAlignTop: number;
+    BtnAlignBottom: number;
+  };
+  CheckBoxOptions: {
+    CheckboxUnchecked: number;
+    CheckboxChecked: number;
+    CheckboxDisplayTick: number;
+    CheckboxDisplayCross: number;
+  };
+  ObjectOptionType: {
+    OBJECTOPTION_STRING: number;
+    OBJECTOPTION_INT: number;
+    OBJECTOPTION_BOOL: number;
+  };
+  VariantType: {
+    VARIANT_EMPTY: number;
+    VARIANT_TEXT: number;
+    VARIANT_NUM: number;
+    VARIANT_OBJECTOPTIONS: number;
+    VARIANT_SIGOBJ: number;
+    VARIANT_SIGCTL: number;
+    VARIANT_INPUTOBJ: number;
+    VARIANT_HASH: number;
+    VARIANT_IMGURL: number;
+    VARIANT_BASE64: number;
+    VARIANT_DYNCAP: number;
+    VARIANT_WIZCTL: number;
+    VARIANT_FONT: number;
+    VARIANT_KEY: number;
+  };
+  PrimitiveType: {
+    PrimitiveLine: number;
+    PrimitiveRectangle: number;
+    PrimitiveEllipse: number;
+  };
+  PrimitiveOptions: {
+    PrimitiveLineSolid: number;
+    PrimitiveLineDashed: number;
+    PrimitiveOutline: number;
+    PrimitiveFill: number;
+    PrimitiveFillXOR: number;
+  };
+  EventType: {
+    EvTextClicked: number;
+    EvButtonClicked: number;
+    EvCheckboxChecked: number;
+    EvCheckboxUnchecked: number;
+    EvInputMinReached: number;
+    EvInputMaxReached: number;
+    EvInputExceeded: number;
+  };
+  EncryptAlg: { EncryptNone: number; EncryptTripleDES: number };
+  ResponseStatus: { OK: number; FAILED: number; INVALID_SESSION: number };
+  FontWeight: {
+    FW_DONTCARE: number;
+    FW_THIN: number;
+    FW_EXTRALIGHT: number;
+    FW_LIGHT: number;
+    FW_NORMAL: number;
+    FW_MEDIUM: number;
+    FW_SEMIBOLD: number;
+    FW_BOLD: number;
+    FW_EXTRABOLD: number;
+    FW_HEAVY: number;
+    FW_ULTRALIGHT: number;
+    FW_REGULAR: number;
+    FW_DEMIBOLD: number;
+    FW_ULTRABOLD: number;
+    FW_BLACK: number;
+  };
+  FontCharset: {
+    ANSI_CHARSET: number;
+    DEFAULT_CHARSET: number;
+    SYMBOL_CHARSET: number;
+    SHIFTJIS_CHARSET: number;
+    HANGEUL_CHARSET: number;
+    HANGUL_CHARSET: number;
+    GB2312_CHARSET: number;
+    CHINESEBIG5_CHARSET: number;
+    OEM_CHARSET: number;
+    JOHAB_CHARSET: number;
+    HEBREW_CHARSET: number;
+    ARABIC_CHARSET: number;
+    GREEK_CHARSET: number;
+    TURKISH_CHARSET: number;
+    VIETNAMESE_CHARSET: number;
+    THAI_CHARSET: number;
+    EASTEUROPE_CHARSET: number;
+    RUSSIAN_CHARSET: number;
+    MAC_CHARSET: number;
+    BALTIC_CHARSET: number;
+    FS_LATIN1: number;
+    FS_LATIN2: number;
+    FS_CYRILLIC: number;
+    FS_GREEK: number;
+    FS_TURKISH: number;
+    FS_HEBREW: number;
+    FS_ARABIC: number;
+    FS_BALTIC: number;
+    FS_VIETNAMESE: number;
+    FS_THAI: number;
+    FS_JISJAPAN: number;
+    FS_CHINESESIMP: number;
+    FS_WANSUNG: number;
+    FS_CHINESETRAD: number;
+    FS_JOHAB: number;
+    FS_SYMBOL: number;
+  };
+  Font: (
+    _name: any,
+    _size: any,
+    _weight: any,
+    _charset: any,
+    _italic: any,
+    _underline: any,
+    _strike: any,
+  ) => void;
+  type: any;
+  fontName: any;
+  fontSize: any;
+  sWeight: any;
+  sCharset: any;
+  fItalic: any;
+  fUnderline: any;
+  fStrikethrough: any;
+  keepAlive: () => void;
+  getVersion: (_onGetVersion: any) => void;
+  Hash: (_onHash: any) => void;
+  handle: null;
+  Add!: (hData: any, _onAdd: any) => void;
+  Clear!: (_onClear: any) => void;
+  GetType!: (_onGetType: any) => void;
+  PutType!: (type: any, _onPutType: any) => void;
+  Key: (_onKey: any) => void;
+  Set!: (type: any, value: any, _onSet: any) => void;
+  Bitmap: () => void;
+  isBase64!: boolean;
+  mime_type: null;
+  image!: HTMLImageElement;
+  SigObj: () => void;
+  CheckIntegrity!: (key: any, _onCheckIntegrity: any) => void;
+  Variant: any;
+  CheckSignedData!: (hash: any, _onCheckSignedData: any) => void;
+  GetAdditionalData!: (captData: any, _onGetAdditionalData: any) => void;
+  GetCrossedOut!: (_onGetCrossedOut: any) => void;
+  GetExtraData!: (key: any, _onGetExtraData: any) => void;
+  GetHeight!: (_onGetHeight: any) => void;
+  GetInk!: (_onGetInk: any) => void;
+  GetIsCaptured!: (_onGetIsCaptured: any) => void;
+  GetProperty!: (key: any, _onGetProperty: any) => void;
+  GetSigData!: (_onGetSigData: any) => void;
+  GetSigText!: (_onGetSigText: any) => void;
+  GetWhen!: (timeZone: any, _onGetWhen: any) => void;
+  GetWho!: (_onGetWho: any) => void;
+  GetWhy!: (_onGetWhy: any) => void;
+  GetWidth!: (_onGetWidth: any) => void;
+  PutExtraData!: (key: any, value: any, _onPutExtraData: any) => void;
+  PutInk!: (ink: any, _onPutInk: any) => void;
+  PutSigData!: (sigData: any, _onPutSigData: any) => void;
+  PutSigText!: (sigText: any, _onPutSigText: any) => void;
+  ReadEncodedBitmap!: (bitmapURL: any, _onReadEncodedBitmap: any) => void;
+  RenderBitmap!: (
+    mime_type: any,
+    width: any,
+    height: any,
+    ink_width: any,
+    ink_color: any,
+    background_color: any,
+    flags: any,
+    paddingX: any,
+    paddingY: any,
+    _onRenderBitmap: any,
+  ) => void;
+  SetProperty!: (key: any, value: any, _onSetProperty: any) => void;
+  DynamicCapture: (_onConstructor: any) => void;
+  Capture!: (
+    sigCtl: any,
+    who: any,
+    why: any,
+    what: any,
+    key: any,
+    _onCapture: any,
+  ) => void;
+  GetLicence!: (_onGetLicence: any) => void;
+  PutLicence!: (licence: any, _onPutLicence: any) => void;
+  SigCtl: (_onConstructor: any) => void;
+  AboutBox!: (_onAboutBox: any) => void;
+  GetAppData!: (key: any, _onGetAppData: any) => void;
+  GetInputData!: (_onGetInputData: any) => void;
+  GetSignature!: (_onGetSignature: any) => void;
+  PutAppData!: (key: any, val: any, _onPutAppData: any) => void;
+  PutInputData!: (inputData: any, _onPutInputData: any) => void;
+  PutProperties!: (properties: any, _onPutProperties: any) => void;
+  PutSignature!: (sigObj: any, _onPutSignature: any) => void;
+  InputObj: (_onConstructor: any) => void;
+  GetData!: (_onGetData: any) => void;
+  GetEncryptionType!: (_onGetEncryptionType: any) => void;
+  GetMaxLength!: (_onGetMaxLength: any) => void;
+  GetMinLength!: (_onGetMinLength: any) => void;
+  GetText!: (_onGetText: any) => void;
+  PutMaxLength!: (maxLength: any, _onPutMaxLength: any) => void;
+  PutMinLength!: (minLength: any, _onPutMinLength: any) => void;
+  SetEncryption!: (type: any, key: any, _onSetEncryption: any) => void;
+  ObjectOptions: () => void;
+  AddOption!: (name: any, value: any) => void;
+  Parse!: (data: any, id: any) => void;
+  text: any;
+  num!: number;
+  base64: any;
+  url: any;
+  Stringify!: (datau: any, id: any) => void;
+  WizCtl: (_onConstructor: any) => void;
+  AddObject!: (
+    objType: any,
+    id: any,
+    X: any,
+    Y: any,
+    objData: any,
+    options: any,
+    _onAddObject: any,
+  ) => void;
+  AddPrimitive!: (
+    primType: any,
+    X1: any,
+    Y1: any,
+    X2: any,
+    Y2: any,
+    primData: any,
+    options: any,
+    _onAddPrimitive: any,
+  ) => void;
+  Close!: (_onClose: any) => void;
+  Display!: (_onDisplay: any) => void;
+  FireClick!: (id: any, _onFireClick: any) => void;
+  GetBackColor!: (_onGetBackColor: any) => void;
+  GetBorderColor!: (_onGetBorderColor: any) => void;
+  GetBorderStyle!: (_onGetBorderStyle: any) => void;
+  GetBorderVisible!: (_onGetBorderVisible: any) => void;
+  GetBorderWidth!: (_onGetBorderWidth: any) => void;
+  GetEnableWizardDisplay!: (_onGetEnableWizardDisplay: any) => void;
+  GetFont!: (_onGetFont: any) => void;
+  GetInkingPad!: (_onGetInkingPad: any) => void;
+  GetObjectState!: (id: any, _onGetObjectState: any) => void;
+  GetPadHeight!: (_onGetPadHeight: any) => void;
+  GetPadWidth!: (_onGetPadWidth: any) => void;
+  GetVisibleWindow!: (_onGetVisibleWindow: any) => void;
+  GetZoom!: (_onGetZoom: any) => void;
+  PadConnect!: (_onPadConnect: any) => void;
+  PadDisconnect!: (_onPadDisconnect: any) => void;
+  PutBackColor!: (backColor: any, _onPutBackColor: any) => void;
+  PutBorderColor!: (borderColor: any, _onPutBorderColor: any) => void;
+  PutBorderStyle!: (borderStyle: any, _onPutBorderStyle: any) => void;
+  PutBorderVisible!: (borderVisible: any, _onPutBorderVisible: any) => void;
+  PutBorderWidth!: (borderWidth: any, _onPutBorderWidth: any) => void;
+  PutEnableWizardDisplay!: (
+    enableWD: any,
+    _onPutEnableWizardDisplay: any,
+  ) => void;
+  PutFont!: (font: any, _onPutFont: any) => void;
+  PutPadHeight!: (height: any, _onPutPadHeight: any) => void;
+  PutPadWidth!: (width: any, _onPutPadWidth: any) => void;
+  PutRefFont!: (font: any, _onPutRefFont: any) => void;
+  PutVisibleWindow!: (visible: any, _onPutVisibleWindow: any) => void;
+  PutZoom!: (zoom: any, _onPutZoom: any) => void;
+  Reset!: (_onReset: any) => void;
+  SetEventHandler!: (eventHandler: any) => void;
 
-  constructor(_onDetectRunning, service_port) {
+  constructor(
+    _onDetectRunning: { (): void; (): void },
+    service_port: string | number,
+  ) {
     this._onDetectRunning = _onDetectRunning;
     this.service_port = service_port;
 
     this.running = false;
     this.session = null;
     this.service_detected = false;
-    let sigsdkptr = this;
+    const sigsdkptr = this;
     window.sdkPtr = sigsdkptr;
-    var server_url = 'https://localhost:';
+    let server_url = 'https://localhost:';
 
     this.RBFlags = {
       //RenderOutputBinary : 2048,    // Not supported in SigCaptX
@@ -360,21 +743,24 @@ export class WacomGSS_SignatureSDK {
         typeof _charset == 'undefined'
           ? sigsdkptr.FontCharset.ANSI_CHARSET
           : _charset;
-      this.fItalic = typeof fItalic == 'undefined' ? 0 : fItalic;
-      this.fUnderline = typeof _underline == 'undefined' ? 0 : fUnderline;
+      this.fItalic = typeof _italic == 'undefined' ? 0 : _italic;
+      this.fUnderline = typeof _underline == 'undefined' ? 0 : _underline;
       this.fStrikethrough = typeof _strike == 'undefined' ? 0 : _strike;
     };
 
     this.keepAlive = function () {
-      var data = {
+      const data = {
         session: sigsdkptr.session,
         KeepAlive: 1,
       };
-      JSONreq.getJSON(server_url + 'wacom.js', data, function () {});
+      JSONreq.getJSON(server_url + 'wacom.js', data as any, function () {});
       setTimeout(sigsdkptr.keepAlive, 2000);
     };
 
-    function onGetSession(server_data) {
+    function onGetSession(server_data: {
+      status: string | number;
+      session: null;
+    }) {
       if (0 == server_data.status) {
         sigsdkptr.session = server_data.session;
         sigsdkptr.running = true;
@@ -385,14 +771,14 @@ export class WacomGSS_SignatureSDK {
       }
     }
 
-    function onGetPort(server_data) {
+    function onGetPort(server_data: { status: string | number; port: string }) {
       if (0 == server_data.status) {
         sigsdkptr.service_detected = true;
         server_url += server_data.port + '/';
-        var data = {
+        const data = {
           CreateSession: 1,
         };
-        JSONreq.getJSON(server_url + 'wacom.js', data, onGetSession);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, onGetSession);
       } else {
         console.log('Signature SDK Service error: ' + server_data.status);
       }
@@ -400,18 +786,18 @@ export class WacomGSS_SignatureSDK {
 
     function destroySession() {
       if (sigsdkptr.session != 0) {
-        var u =
+        const u: any =
           server_url +
           'wacom.js' +
           '?DestroySession=1&session=' +
           sigsdkptr.session;
 
-        sigsdkptr.session = 0;
+        (sigsdkptr.session as any) = 0;
 
-        if (self.Navigator.sendBeacon != undefined) {
-          self.Navigator.sendBeacon(u);
+        if ((self.Navigator as any).sendBeacon != undefined) {
+          (self.Navigator as any).sendBeacon(u);
         } else {
-          var r = new XMLHttpRequest();
+          const r = new XMLHttpRequest();
           r.open('GET', u, false); // synchronous
           r.send(null);
         }
@@ -423,77 +809,81 @@ export class WacomGSS_SignatureSDK {
     });
 
     function checkService() {
-      var data = { GetPort: 1 };
-      JSONreq.getJSON(server_url + service_port + '/wacom.js', data, onGetPort);
+      const data = { GetPort: 1 };
+      JSONreq.getJSON(
+        server_url + service_port + '/wacom.js',
+        data as any,
+        onGetPort,
+      );
     }
     checkService();
 
     this.getVersion = function (_onGetVersion) {
-      var data = {
+      const data = {
         GetVersion: 1,
         session: sigsdkptr.session,
       };
-      function callback(server_data) {
+      function callback(server_data: { version: any; status: string }) {
         _onGetVersion(
           /*thisptr,*/ server_data.version,
           parseInt(server_data.status),
         );
       }
-      JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+      JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
     };
 
-    function checkVar(input) {
+    function checkVar(input: number | null) {
       return 'undefined' == typeof input || null == input ? '' : input;
     }
 
     this.Hash = function (_onHash) {
-      var thisptr = this;
+      const thisptr = this;
       this.handle = null;
       this.type = sigsdkptr.VariantType.VARIANT_HASH;
 
-      var data = {
+      const data = {
         Hash: 'Constructor',
         session: sigsdkptr.session,
       };
-      function callback(server_data) {
+      function callback(server_data: { handle: null; status: string }) {
         thisptr.handle = server_data.handle;
         _onHash(thisptr, parseInt(server_data.status));
       }
-      JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+      JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
 
       // hData is a sigsdkptr.Variant
       this.Add = function (hData, _onAdd) {
-        var data = {
+        const data = {
           Hash: 'Add',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
         hData.Stringify(data, 'hData');
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onAdd(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.Clear = function (_onClear) {
-        var data = {
+        const data = {
           Hash: 'Clear',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onClear(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetType = function (_onGetType) {
-        var data = {
+        const data = {
           Hash: 'GetType',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { hashType: string; status: string }) {
           // server_data.type type is sigsdkptr.HashType
           _onGetType(
             thisptr,
@@ -501,45 +891,45 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // type is sigsdkptr.HashType
       this.PutType = function (type, _onPutType) {
-        var data = {
+        const data = {
           Hash: 'PutType',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           type: checkVar(type),
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutType(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
     };
 
     this.Key = function (_onKey) {
-      var thisptr = this;
+      const thisptr = this;
       this.handle = null;
       this.type = sigsdkptr.VariantType.VARIANT_KEY;
 
-      var data = {
+      const data = {
         Key: 'Constructor',
         session: sigsdkptr.session,
       };
-      function callback(server_data) {
+      function callback(server_data: { handle: null; status: string }) {
         thisptr.handle = server_data.handle;
         _onKey(thisptr, parseInt(server_data.status));
       }
-      JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+      JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
 
       this.GetType = function (_onGetType) {
-        var data = {
+        const data = {
           Key: 'GetType',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { type: string; status: string }) {
           // server_data.type type is sigsdkptr.KeyType
           _onGetType(
             thisptr,
@@ -547,27 +937,27 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // type is sigsdkptr.KeyType
       // value is sigsdkptr.Variant
       this.Set = function (type, value, _onSet) {
-        var data = {
+        const data = {
           Key: 'Set',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           type: checkVar(type),
         };
         value.Stringify(data, 'value');
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onSet(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
     };
 
     this.Bitmap = function () {
-      var thisptr = this;
+      const thisptr = this;
       this.handle = null;
       this.isBase64 = false;
       this.mime_type = null;
@@ -575,61 +965,64 @@ export class WacomGSS_SignatureSDK {
     };
 
     this.SigObj = function () {
-      var thisptr = this;
+      const thisptr = this;
       this.handle = null;
       this.type = sigsdkptr.VariantType.VARIANT_SIGOBJ;
 
       // key is sigsdkptr.Key
       this.CheckIntegrity = function (key, _onCheckIntegrity) {
-        var data = {
+        const data = {
           SigObj: 'CheckIntegrity',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        var vKey = new sigsdkptr.Variant();
+        const vKey = new sigsdkptr.Variant();
         vKey.Set(key);
         vKey.Stringify(data, 'key');
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           //server_data.status type is sigsdkptr.IntegrityStatus
           _onCheckIntegrity(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // hash type is sigsdkptr.Hash
       this.CheckSignedData = function (hash, _onCheckSignedData) {
-        var data = {
+        const data = {
           SigObj: 'CheckSignedData',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           HashHandle: checkVar(hash.handle),
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           //server_data.status type is sigsdkptr.SignedData
           _onCheckSignedData(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.Clear = function (_onClear) {
-        var data = {
+        const data = {
           SigObj: 'Clear',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onClear(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // captData type is sigsdkptr.CaptData
       this.GetAdditionalData = function (captData, _onGetAdditionalData) {
-        var data = {
+        const data = {
           SigObj: 'GetAdditionalData',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           captData: checkVar(captData),
         };
-        function callback(server_data) {
+        function callback(server_data: {
+          additionalData: any;
+          status: string;
+        }) {
           //server_data.additionalData is a string
           _onGetAdditionalData(
             thisptr,
@@ -637,16 +1030,16 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetCrossedOut = function (_onGetCrossedOut) {
-        var data = {
+        const data = {
           SigObj: 'GetCrossedOut',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { crossedOut: string; status: string }) {
           //server_data.crossedOut is a bool
           _onGetCrossedOut(
             thisptr,
@@ -654,17 +1047,17 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // key is a string
       this.GetExtraData = function (key, _onGetExtraData) {
-        var data = {
+        const data = {
           SigObj: 'GetExtraData',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           key: checkVar(key),
         };
-        function callback(server_data) {
+        function callback(server_data: { extraData: any; status: string }) {
           //server_data.extraData is a string
           _onGetExtraData(
             thisptr,
@@ -672,16 +1065,16 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetHeight = function (_onGetHeight) {
-        var data = {
+        const data = {
           SigObj: 'GetHeight',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { height: string; status: string }) {
           //server_data.height is a number
           _onGetHeight(
             thisptr,
@@ -689,29 +1082,29 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetInk = function (_onGetInk) {
-        var data = {
+        const data = {
           SigObj: 'GetInk',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { ink: any; status: string }) {
           //server_data.ink is a string
           _onGetInk(thisptr, server_data.ink, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetIsCaptured = function (_onGetIsCaptured) {
-        var data = {
+        const data = {
           SigObj: 'GetIsCaptured',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { isCaptured: string; status: string }) {
           //server_data.isCaptured is a bool
           _onGetIsCaptured(
             thisptr,
@@ -719,46 +1112,46 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // key is a string
       this.GetProperty = function (key, _onGetProperty) {
-        var data = {
+        const data = {
           SigObj: 'GetProperty',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           key: checkVar(key),
         };
-        function callback(server_data) {
-          var property = new sigsdkptr.Variant();
+        function callback(server_data: { status: string }) {
+          const property = new sigsdkptr.Variant();
           property.Parse(server_data, 'property');
           _onGetProperty(thisptr, property, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetSigData = function (_onGetSigData) {
-        var data = {
+        const data = {
           SigObj: 'GetSigData',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           //server_data.sigData is a sigsdkptr.Variant (if it's a VARIANT_TEXT, it's Base64 encoded)
-          var sigData = new sigsdkptr.Variant();
+          const sigData = new sigsdkptr.Variant();
           sigData.Parse(server_data, 'sigData');
           _onGetSigData(thisptr, sigData, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetSigText = function (_onGetSigText) {
-        var data = {
+        const data = {
           SigObj: 'GetSigText',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { sigText: any; status: string }) {
           //server_data.sigText is a string
           _onGetSigText(
             thisptr,
@@ -766,65 +1159,74 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       //timeZone is a sigsdkptr.TimeZone
       this.GetWhen = function (timeZone, _onGetWhen) {
-        var data = {
+        const data = {
           SigObj: 'GetWhen',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           timeZone: checkVar(timeZone),
         };
-        function callback(server_data) {
+        function callback(server_data: {
+          year: string;
+          month: string;
+          day: string;
+          hour: string;
+          minute: string;
+          second: string;
+          dayOfWeek: string;
+          status: string;
+        }) {
           //server_data.when is a date
-          var date = new Date(
+          const date = new Date(
             parseFloat(server_data.year),
             parseFloat(server_data.month) - 1,
             parseFloat(server_data.day),
             parseFloat(server_data.hour),
             parseFloat(server_data.minute),
             parseFloat(server_data.second),
-          );
+          ) as any;
           date.dayOfWeek = parseFloat(server_data.dayOfWeek);
           _onGetWhen(thisptr, date, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetWho = function (_onGetWho) {
-        var data = {
+        const data = {
           SigObj: 'GetWho',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { who: any; status: string }) {
           //server_data.who is a string
           _onGetWho(thisptr, server_data.who, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetWhy = function (_onGetWhy) {
-        var data = {
+        const data = {
           SigObj: 'GetWhy',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { why: any; status: string }) {
           //server_data.why is a string
           _onGetWhy(thisptr, server_data.why, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetWidth = function (_onGetWidth) {
-        var data = {
+        const data = {
           SigObj: 'GetWidth',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { width: string; status: string }) {
           //server_data.width is a number
           _onGetWidth(
             thisptr,
@@ -832,77 +1234,77 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // key is a string
       // value is a string
       this.PutExtraData = function (key, value, _onPutExtraData) {
-        var data = {
+        const data = {
           SigObj: 'PutExtraData',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           key: checkVar(key),
           value: checkVar(value),
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutExtraData(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // ink is a string
       this.PutInk = function (ink, _onPutInk) {
-        var data = {
+        const data = {
           SigObj: 'PutInk',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           ink: checkVar(ink),
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutInk(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // sigData type is sigsdkptr.Variant
       this.PutSigData = function (sigData, _onPutSigData) {
-        var data = {
+        const data = {
           SigObj: 'PutSigData',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
         sigData.Stringify(data, 'sigData');
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutSigData(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // sigText is a string
       this.PutSigText = function (sigText, _onPutSigText) {
-        var data = {
+        const data = {
           SigObj: 'PutSigText',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           sigText: checkVar(sigText),
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutSigText(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // bitmapURL type is a url
       this.ReadEncodedBitmap = function (bitmapURL, _onReadEncodedBitmap) {
-        var data = {
+        const data = {
           SigObj: 'ReadEncodedBitmap',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        var vBmpUrl = new sigsdkptr.Variant();
+        const vBmpUrl = new sigsdkptr.Variant();
         vBmpUrl.type = sigsdkptr.VariantType.VARIANT_IMGURL;
         vBmpUrl.url = bitmapURL;
         vBmpUrl.Stringify(data, 'bitmapURL');
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onReadEncodedBitmap(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // mime_type type is a string
       // width is an integer
@@ -925,7 +1327,7 @@ export class WacomGSS_SignatureSDK {
         paddingY,
         _onRenderBitmap,
       ) {
-        var data = {
+        const data = {
           SigObj: 'RenderBitmap',
           session: sigsdkptr.session,
           handle: thisptr.handle,
@@ -939,13 +1341,19 @@ export class WacomGSS_SignatureSDK {
           paddingX: checkVar(paddingX),
           paddingY: checkVar(paddingY),
         };
-        function callback(server_data) {
+        function callback(server_data: {
+          status: string;
+          bitmapHandle: string;
+          isBase64: number;
+          base64: string;
+        }) {
           // eslint-disable-next-line no-debugger
-          var status = parseInt(server_data.status);
+          const status = parseInt(server_data.status);
 
           if (status == 0) {
             if (flags & sigsdkptr.RBFlags.RenderOutputPicture) {
-              var bmp = new sigsdkptr.Bitmap();
+              const s = sigsdkptr as any;
+              const bmp = new s.Bitmap();
               bmp.handle = server_data.bitmapHandle;
               bmp.isBase64 = 1 == server_data.isBase64 ? true : false;
 
@@ -969,55 +1377,55 @@ export class WacomGSS_SignatureSDK {
             _onRenderBitmap(thisptr, null, status);
           }
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // key is a string
       // value is a sigsdkptr.Variant
       this.SetProperty = function (key, value, _onSetProperty) {
-        var data = {
+        const data = {
           SigObj: 'SetProperty',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           key: checkVar(key),
         };
         value.Stringify(data, 'value');
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onSetProperty(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
     };
 
     this.DynamicCapture = function (_onConstructor) {
-      var thisptr = this;
+      const thisptr = this;
       this.handle = null;
 
-      var data = {
+      const data = {
         DynamicCapture: 'Constructor',
         session: sigsdkptr.session,
       };
-      function callback(server_data) {
+      function callback(server_data: { handle: null; status: string }) {
         thisptr.handle = server_data.handle;
         _onConstructor(thisptr, parseInt(server_data.status));
       }
-      JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+      JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       // sigCtl is a sigsdkptr.SigCtl
       // who is a string
       // why is a string
       // what is a sigsdkptr.Hash
       // key is a sigsdkptr.Key
       this.Capture = function (sigCtl, who, why, what, key, _onCapture) {
-        var width =
+        const width =
           window.innerWidth ||
           document.documentElement.clientWidth ||
           document.body.clientWidth;
-        var height =
+        const height =
           window.innerHeight ||
           document.documentElement.clientHeight ||
           document.body.clientHeight;
-        var left = window.screenLeft ? window.screenLeft : window.screenX;
-        var top = window.screenTop ? window.screenTop : window.screenY;
-        var data = {
+        const left = window.screenLeft ? window.screenLeft : window.screenX;
+        const top = window.screenTop ? window.screenTop : window.screenY;
+        const data = {
           DynamicCapture: 'Capture',
           session: sigsdkptr.session,
           who: checkVar(who),
@@ -1029,28 +1437,29 @@ export class WacomGSS_SignatureSDK {
           SigCtlHandle: checkVar(sigCtl.handle),
           handle: thisptr.handle,
         };
-        var vWhat = new sigsdkptr.Variant();
+        const vWhat = new sigsdkptr.Variant();
         vWhat.Set(what);
         vWhat.Stringify(data, 'what');
-        var vKey = new sigsdkptr.Variant();
+        const vKey = new sigsdkptr.Variant();
         vKey.Set(key);
         vKey.Stringify(data, 'key');
-        function callback(server_data) {
-          var sigObj = new sigsdkptr.SigObj();
+        function callback(server_data: { handle: any; status: string }) {
+          const s = sigsdkptr as any;
+          const sigObj = new s.SigObj();
           sigObj.handle = server_data.handle;
           //server_data.status type is sigsdkptr.DynamicCaptureResult
           _onCapture(thisptr, sigObj, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetLicence = function (_onGetLicence) {
-        var data = {
+        const data = {
           DynamicCapture: 'GetLicence',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { licence: any; status: string }) {
           //server_data.licence type is string
           _onGetLicence(
             thisptr,
@@ -1058,80 +1467,80 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // key type is string
       this.GetProperty = function (key, _onGetProperty) {
-        var data = {
+        const data = {
           DynamicCapture: 'GetProperty',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           key: checkVar(key),
         };
-        function callback(server_data) {
-          var property = new sigsdkptr.Variant();
+        function callback(server_data: { status: string }) {
+          const property = new sigsdkptr.Variant();
           property.Parse(server_data, 'property');
           _onGetProperty(thisptr, property, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // licence type is string
       this.PutLicence = function (licence, _onPutLicence) {
-        var data = {
+        const data = {
           DynamicCapture: 'PutLicence',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           licence: checkVar(licence),
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutLicence(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // key type is string
       // value type is sigsdkptr.Variant
       this.SetProperty = function (key, value, _onSetProperty) {
-        var data = {
+        const data = {
           DynamicCapture: 'SetProperty',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           key: checkVar(key),
         };
         value.Stringify(data, 'value');
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onSetProperty(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
     };
 
     this.SigCtl = function (_onConstructor) {
-      var thisptr = this;
+      const thisptr = this;
       this.handle = null;
       this.type = sigsdkptr.VariantType.VARIANT_SIGCTL;
 
-      var data = {
+      const data = {
         SigCtl: 'Constructor',
         session: sigsdkptr.session,
       };
-      function callback(server_data) {
+      function callback(server_data: { handle: null; status: string }) {
         thisptr.handle = server_data.handle;
         _onConstructor(thisptr, parseInt(server_data.status));
       }
-      JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+      JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
 
       this.AboutBox = function (_onAboutBox) {
-        var width =
+        const width =
           window.innerWidth ||
           document.documentElement.clientWidth ||
           document.body.clientWidth;
-        var height =
+        const height =
           window.innerHeight ||
           document.documentElement.clientHeight ||
           document.body.clientHeight;
-        var left = window.screenLeft ? window.screenLeft : window.screenX;
-        var top = window.screenTop ? window.screenTop : window.screenY;
-        var data = {
+        const left = window.screenLeft ? window.screenLeft : window.screenX;
+        const top = window.screenTop ? window.screenTop : window.screenY;
+        const data = {
           SigCtl: 'AboutBox',
           session: sigsdkptr.session,
           width: checkVar(width),
@@ -1140,25 +1549,25 @@ export class WacomGSS_SignatureSDK {
           top: checkVar(top),
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onAboutBox(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       //key is a string
       this.GetAppData = function (key, _onGetAppData) {
-        var data = {
+        const data = {
           SigCtl: 'GetAppData',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           key: checkVar(key),
         };
-        function callback(server_data) {
-          var appData = new sigsdkptr.Variant();
+        function callback(server_data: { status: string }) {
+          const appData = new sigsdkptr.Variant();
           appData.Parse(server_data, 'appData');
           _onGetAppData(thisptr, appData, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       /*
     this.GetBackColor = function(_onGetBackColor)
@@ -1357,12 +1766,12 @@ export class WacomGSS_SignatureSDK {
     }
     */
       this.GetInputData = function (_onGetInputData) {
-        var data = {
+        const data = {
           SigCtl: 'GetInputData',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { inputData: any; status: string }) {
           //server_data.inputData is a string
           _onGetInputData(
             thisptr,
@@ -1370,7 +1779,7 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       /*
     this.GetInputSignature = function(_onGetInputSignature)
@@ -1420,12 +1829,12 @@ export class WacomGSS_SignatureSDK {
     
     */
       this.GetLicence = function (_onGetLicence) {
-        var data = {
+        const data = {
           SigCtl: 'GetLicence',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { licence: any; status: string }) {
           //server_data.licence is a string
           _onGetLicence(
             thisptr,
@@ -1433,23 +1842,23 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       // key is a string
       this.GetProperty = function (key, _onGetProperty) {
-        var data = {
+        const data = {
           SigCtl: 'GetProperty',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           key: checkVar(key),
         };
-        function callback(server_data) {
-          var property = new sigsdkptr.Variant();
+        function callback(server_data: { status: string }) {
+          const property = new sigsdkptr.Variant();
           property.Parse(server_data, 'property');
           _onGetProperty(thisptr, property, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       /*
     this.GetRotation = function(_onGetRotation)
@@ -1513,17 +1922,21 @@ export class WacomGSS_SignatureSDK {
     }
     */
       this.GetSignature = function (_onGetSignature) {
-        var data = {
+        const data = {
           SigCtl: 'GetSignature',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
-          var sigObj = new sigsdkptr.SigObj();
+        function callback(server_data: {
+          signatureHandle: any;
+          status: string;
+        }) {
+          const s = sigsdkptr as any;
+          const sigObj = new s.SigObj();
           sigObj.handle = server_data.signatureHandle;
           _onGetSignature(thisptr, sigObj, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       /*
     this.GetTabStop = function(_onGetTabStop)
@@ -1573,17 +1986,17 @@ export class WacomGSS_SignatureSDK {
       // key is a string
       // val is sigsdkptr.Variant
       this.PutAppData = function (key, val, _onPutAppData) {
-        var data = {
+        const data = {
           SigCtl: 'PutAppData',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           key: checkVar(key),
         };
         val.Stringify(data, 'val');
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutAppData(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       /*// backColor type is OLE_COLOR (number)
     this.PutBackColor = function(backColor, _onPutBackColor)
@@ -1782,16 +2195,16 @@ export class WacomGSS_SignatureSDK {
     }*/
       // inputData type is string
       this.PutInputData = function (inputData, _onPutInputData) {
-        var data = {
+        const data = {
           SigCtl: 'PutInputData',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           inputData: checkVar(inputData),
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutInputData(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       /*// inputSignature type is string
     this.PutInputSignature = function(inputSignature, _onPutInputSignature)
@@ -1840,29 +2253,29 @@ export class WacomGSS_SignatureSDK {
     }*/
       // licence type is string
       this.PutLicence = function (licence, _onPutLicence) {
-        var data = {
+        const data = {
           SigCtl: 'PutLicence',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           licence: checkVar(licence),
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutLicence(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // properties type is string
       this.PutProperties = function (properties, _onPutProperties) {
-        var data = {
+        const data = {
           SigCtl: 'PutProperties',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           properties: checkVar(properties),
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutProperties(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       /*// font type is sigsdkptr.Variant (sigsdkptr.VariantType.VARIANT_FONT)
     this.PutRefFont = function(font, _onPutRefFont)
@@ -1941,16 +2354,16 @@ export class WacomGSS_SignatureSDK {
     }*/
       // sigObj type is sigsdkptr.SigObj
       this.PutSignature = function (sigObj, _onPutSignature) {
-        var data = {
+        const data = {
           SigCtl: 'PutSignature',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           signatureHandle: checkVar(sigObj.handle),
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutSignature(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       /*// tabStop type is bool
     this.PutTabStop = function(tabStop, _onPutTabStop)
@@ -2000,67 +2413,70 @@ export class WacomGSS_SignatureSDK {
       // key is a string
       // value is sigsdkptr.Variant
       this.SetProperty = function (key, value, _onSetProperty) {
-        var data = {
+        const data = {
           SigCtl: 'SetProperty',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           key: checkVar(key),
         };
         value.Stringify(data, 'value');
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onSetProperty(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
     };
 
     this.InputObj = function (_onConstructor) {
-      var thisptr = this;
+      const thisptr = this;
       this.handle = null;
       this.type = sigsdkptr.VariantType.VARIANT_INPUTOBJ;
 
-      var data = {
+      const data = {
         InputObj: 'Constructor',
         session: sigsdkptr.session,
       };
-      function callback(server_data) {
+      function callback(server_data: { handle: null; status: string }) {
         thisptr.handle = server_data.handle;
         _onConstructor(thisptr, parseInt(server_data.status));
       }
-      JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+      JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
 
       this.Clear = function (_onClear) {
-        var data = {
+        const data = {
           InputObj: 'Clear',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onClear(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetData = function (_onGetData) {
-        var data = {
+        const data = {
           InputObj: 'GetData',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { data: any; status: string }) {
           // server_data.data is a string
           _onGetData(thisptr, server_data.data, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetEncryptionType = function (_onGetEncryptionType) {
-        var data = {
+        const data = {
           InputObj: 'GetEncryptionType',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: {
+          encryptionType: string;
+          status: string;
+        }) {
           // server_data.encryptionType type is sigsdkptr.EncryptAlg
           _onGetEncryptionType(
             thisptr,
@@ -2068,16 +2484,16 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetMaxLength = function (_onGetMaxLength) {
-        var data = {
+        const data = {
           InputObj: 'GetMaxLength',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { maxLength: string; status: string }) {
           // server_data.maxLength is an integer
           _onGetMaxLength(
             thisptr,
@@ -2085,16 +2501,16 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetMinLength = function (_onGetMinLength) {
-        var data = {
+        const data = {
           InputObj: 'GetMinLength',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { minLength: string; status: string }) {
           // server_data.minLength is an integer
           _onGetMinLength(
             thisptr,
@@ -2102,18 +2518,18 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetProperty = function (name, _onGetProperty) {
-        var data = {
+        const data = {
           InputObj: 'GetProperty',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           name: checkVar(name),
         };
-        function callback(server_data) {
-          var property = new sigsdkptr.Variant();
+        function callback(server_data: { property: any; status: string }) {
+          const property = new sigsdkptr.Variant();
           property.Parse(server_data, 'property');
           _onGetProperty(
             thisptr,
@@ -2121,82 +2537,82 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetText = function (_onGetText) {
-        var data = {
+        const data = {
           InputObj: 'GetText',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { text: any; status: string }) {
           // server_data.text is a string
           _onGetText(thisptr, server_data.text, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // maxLength is an integer
       this.PutMaxLength = function (maxLength, _onPutMaxLength) {
-        var data = {
+        const data = {
           InputObj: 'PutMaxLength',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           maxLength: checkVar(maxLength),
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutMaxLength(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // minLength is an integer
       this.PutMinLength = function (minLength, _onPutMinLength) {
-        var data = {
+        const data = {
           InputObj: 'PutMinLength',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           minLength: checkVar(minLength),
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutMinLength(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // type is a sigsdkptr.EncryptAlg
       // key is a sigsdkptr.Variant (with type either VARIANT_BASE64 or a base64 encoded VARIANT_TEXT string)
       this.SetEncryption = function (type, key, _onSetEncryption) {
-        var data = {
+        const data = {
           InputObj: 'SetEncryption',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           type: checkVar(type),
         };
         key.Stringify(data, 'key');
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onSetEncryption(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // name is a string
       // value is    a string
       this.SetProperty = function (name, value, _onSetProperty) {
-        var data = {
+        const data = {
           InputObj: 'SetProperty',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           name: checkVar(name),
           value: checkVar(value),
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onSetProperty(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
     };
 
     // _type type is sigsdkptr.ObjectOptionType
     this.ObjectOptions = function (/*_type*/) {
-      var thisptr = this;
+      const thisptr = this as any;
       this.type = sigsdkptr.VariantType.VARIANT_OBJECTOPTIONS; //_type;
 
       this.AddOption = function (name, value) {
@@ -2205,12 +2621,12 @@ export class WacomGSS_SignatureSDK {
     };
 
     this.Variant = function () {
-      var thisptr = this;
+      const thisptr = this as any;
 
       this.type = sigsdkptr.VariantType.VARIANT_EMPTY;
 
       this.Parse = function (data, id) {
-        var dataType = parseInt(data[id + '.type']);
+        const dataType = parseInt(data[id + '.type']);
         switch (dataType) {
           case sigsdkptr.VariantType.VARIANT_TEXT: {
             thisptr.type = dataType;
@@ -2285,7 +2701,7 @@ export class WacomGSS_SignatureSDK {
           switch (input.type) {
             case sigsdkptr.VariantType.VARIANT_OBJECTOPTIONS: {
               thisptr.type = sigsdkptr.VariantType.VARIANT_OBJECTOPTIONS;
-              for (o in input) {
+              for (const o in input) {
                 if (o != 'type') {
                   if (typeof input[o] == 'string') {
                     thisptr[o] = input[o];
@@ -2295,8 +2711,8 @@ export class WacomGSS_SignatureSDK {
                     // truncate: don't use Math.trunc() as it's ECMAScript6 experimental
                     thisptr[o] =
                       input[o] > 0 ? Math.floor(input[o]) : Math.ceil(input[o]);
-                    thisptr[o + '.type'] =
-                      sigsdkptr.ObjectOptionType.OBJECTOPTION_INT;
+                    thisptr[o + '.type'] = sigsdkptr.ObjectOptionType
+                      .OBJECTOPTION_INT as any;
                   } else if (typeof input[o] == 'boolean') {
                     thisptr[o] = input[o] == true ? 1 : 0;
                     thisptr[o + '.type'] =
@@ -2358,7 +2774,7 @@ export class WacomGSS_SignatureSDK {
       };
 
       this.Stringify = function (datau, id) {
-        for (var o in thisptr) {
+        for (const o in thisptr) {
           if (
             typeof o == 'string' &&
             typeof thisptr[o] != 'function' &&
@@ -2374,21 +2790,21 @@ export class WacomGSS_SignatureSDK {
     };
 
     this.WizCtl = function (_onConstructor) {
-      var thisptr = this;
+      const thisptr = this;
       this.handle = null;
 
-      var width =
+      const width =
         window.innerWidth ||
         document.documentElement.clientWidth ||
         document.body.clientWidth;
-      var height =
+      const height =
         window.innerHeight ||
         document.documentElement.clientHeight ||
         document.body.clientHeight;
-      var left = window.screenLeft ? window.screenLeft : window.screenX;
-      var top = window.screenTop ? window.screenTop : window.screenY;
+      const left = window.screenLeft ? window.screenLeft : window.screenX;
+      const top = window.screenTop ? window.screenTop : window.screenY;
 
-      var data = {
+      const data = {
         WizCtl: 'Constructor',
         session: sigsdkptr.session,
         width: width,
@@ -2396,11 +2812,11 @@ export class WacomGSS_SignatureSDK {
         left: left,
         top: top,
       };
-      function callback(server_data) {
+      function callback(server_data: { handle: null; status: string }) {
         thisptr.handle = server_data.handle;
         _onConstructor(thisptr, parseInt(server_data.status));
       }
-      JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+      JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
 
       //objType type is sigsdkptr.ObjectType
       //id type is string
@@ -2417,25 +2833,25 @@ export class WacomGSS_SignatureSDK {
         options,
         _onAddObject,
       ) {
-        var data = {
+        const data = {
           WizCtl: 'AddObject',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           objType: checkVar(objType),
           id: checkVar(id),
-        };
-        var vX = new sigsdkptr.Variant();
-        var vY = new sigsdkptr.Variant();
+        } as any;
+        const vX = new sigsdkptr.Variant();
+        const vY = new sigsdkptr.Variant();
         vX.Set(X);
         vY.Set(Y);
         vX.Stringify(data, 'X');
         vY.Stringify(data, 'Y');
         objData.Stringify(data, 'objData');
         options.Stringify(data, 'options');
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onAddObject(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       //primType type is sigsdkptr.PrimitiveType
       //X1 type type is a number, text or sigsdkptr.Variant
@@ -2454,16 +2870,16 @@ export class WacomGSS_SignatureSDK {
         options,
         _onAddPrimitive,
       ) {
-        var data = {
+        const data = {
           WizCtl: 'AddPrimitive',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           primType: checkVar(primType),
         };
-        var vX1 = new sigsdkptr.Variant();
-        var vY1 = new sigsdkptr.Variant();
-        var vX2 = new sigsdkptr.Variant();
-        var vY2 = new sigsdkptr.Variant();
+        const vX1 = new sigsdkptr.Variant();
+        const vY1 = new sigsdkptr.Variant();
+        const vX2 = new sigsdkptr.Variant();
+        const vY2 = new sigsdkptr.Variant();
         vX1.Set(X1);
         vY1.Set(Y1);
         vX2.Set(X2);
@@ -2474,56 +2890,56 @@ export class WacomGSS_SignatureSDK {
         vY2.Stringify(data, 'Y2');
         primData.Stringify(data, 'primData');
         options.Stringify(data, 'options');
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onAddPrimitive(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.Close = function (_onClose) {
-        var data = {
+        const data = {
           WizCtl: 'Close',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onClose(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.Display = function (_onDisplay) {
-        var data = {
+        const data = {
           WizCtl: 'Display',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onDisplay(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // id type is string
       this.FireClick = function (id, _onFireClick) {
-        var data = {
+        const data = {
           WizCtl: 'FireClick',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           fireClickId: id,
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onFireClick(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetBackColor = function (_onGetBackColor) {
-        var data = {
+        const data = {
           WizCtl: 'GetBackColor',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { backColor: string; status: string }) {
           // server_data.backColor type is OLE_COLOR (number)
           _onGetBackColor(
             thisptr,
@@ -2531,16 +2947,19 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetBorderColor = function (_onGetBorderColor) {
-        var data = {
+        const data = {
           WizCtl: 'GetBorderColor',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: {
+          borderColor: string;
+          status: string;
+        }) {
           // server_data.backColor type is OLE_COLOR (number)
           _onGetBorderColor(
             thisptr,
@@ -2548,16 +2967,19 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetBorderStyle = function (_onGetBorderStyle) {
-        var data = {
+        const data = {
           WizCtl: 'GetBorderStyle',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: {
+          borderStyle: string;
+          status: string;
+        }) {
           // server_data.borderStyle type is a number
           _onGetBorderStyle(
             thisptr,
@@ -2565,16 +2987,19 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetBorderVisible = function (_onGetBorderVisible) {
-        var data = {
+        const data = {
           WizCtl: 'GetBorderVisible',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: {
+          borderVisible: string;
+          status: string;
+        }) {
           //server_data.borderVisible is a bool
           _onGetBorderVisible(
             thisptr,
@@ -2582,16 +3007,19 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetBorderWidth = function (_onGetBorderWidth) {
-        var data = {
+        const data = {
           WizCtl: 'GetBorderWidth',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: {
+          borderWidth: string;
+          status: string;
+        }) {
           //server_data.borderWidth is a number
           _onGetBorderWidth(
             thisptr,
@@ -2599,16 +3027,16 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetEnableWizardDisplay = function (_onGetEnableWizardDisplay) {
-        var data = {
+        const data = {
           WizCtl: 'GetEnableWizardDisplay',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { enableWD: string; status: string }) {
           //server_data.enableWD is a bool
           _onGetEnableWizardDisplay(
             thisptr,
@@ -2616,30 +3044,30 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetFont = function (_onGetFont) {
-        var data = {
+        const data = {
           WizCtl: 'GetFont',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
-          var font = new sigsdkptr.Variant();
+        function callback(server_data: { status: string }) {
+          const font = new sigsdkptr.Variant();
           font.Parse(server_data, 'font');
           _onGetFont(thisptr, font, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetInkingPad = function (_onGetInkingPad) {
-        var data = {
+        const data = {
           WizCtl: 'GetInkingPad',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { inkingPad: string; status: string }) {
           //server_data.inkingPad is a bool
           _onGetInkingPad(
             thisptr,
@@ -2647,16 +3075,16 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetLicence = function (_onGetLicence) {
-        var data = {
+        const data = {
           WizCtl: 'GetLicence',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { licence: any; status: string }) {
           //server_data.licence type is string
           _onGetLicence(
             thisptr,
@@ -2664,31 +3092,31 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // id type is string
       this.GetObjectState = function (id, _onGetObjectState) {
-        var data = {
+        const data = {
           WizCtl: 'GetObjectState',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           objectId: checkVar(id),
         };
-        function callback(server_data) {
-          var state = new sigsdkptr.Variant();
+        function callback(server_data: { status: string }) {
+          const state = new sigsdkptr.Variant();
           state.Parse(server_data, 'objState');
           _onGetObjectState(thisptr, state, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetPadHeight = function (_onGetPadHeight) {
-        var data = {
+        const data = {
           WizCtl: 'GetPadHeight',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { height: string; status: string }) {
           //server_data.height type is a number
           _onGetPadHeight(
             thisptr,
@@ -2696,16 +3124,16 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetPadWidth = function (_onGetPadWidth) {
-        var data = {
+        const data = {
           WizCtl: 'GetPadWidth',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { width: string; status: string }) {
           //server_data.width type is a number
           _onGetPadWidth(
             thisptr,
@@ -2713,31 +3141,31 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // key is a string
       this.GetProperty = function (key, _onGetProperty) {
-        var data = {
+        const data = {
           WizCtl: 'GetProperty',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           key: checkVar(key),
         };
-        function callback(server_data) {
-          var property = new sigsdkptr.Variant();
+        function callback(server_data: { status: string }) {
+          const property = new sigsdkptr.Variant();
           property.Parse(server_data, 'property');
           _onGetProperty(thisptr, property, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetVisibleWindow = function (_onGetVisibleWindow) {
-        var data = {
+        const data = {
           WizCtl: 'GetVisibleWindow',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { visible: string; status: string }) {
           // server_data.visible type is boolean
           _onGetVisibleWindow(
             thisptr,
@@ -2745,16 +3173,16 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.GetZoom = function (_onGetZoom) {
-        var data = {
+        const data = {
           WizCtl: 'GetZoom',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { zoom: string; status: string }) {
           // server_data.zoom type is a number
           _onGetZoom(
             thisptr,
@@ -2762,16 +3190,16 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.PadConnect = function (_onPadConnect) {
-        var data = {
+        const data = {
           WizCtl: 'PadConnect',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { padConnect: string; status: string }) {
           // server_data.padConnect type is a bool
           _onPadConnect(
             thisptr,
@@ -2779,251 +3207,258 @@ export class WacomGSS_SignatureSDK {
             parseInt(server_data.status),
           );
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.PadDisconnect = function (_onPadDisconnect) {
-        var data = {
+        const data = {
           WizCtl: 'PadDisconnect',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPadDisconnect(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // backColor type is OLE_COLOR (number)
       this.PutBackColor = function (backColor, _onPutBackColor) {
-        var data = {
+        const data = {
           WizCtl: 'PutBackColor',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           backColor: checkVar(backColor),
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutBackColor(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // borderColor type is OLE_COLOR (number)
       this.PutBorderColor = function (borderColor, _onPutBorderColor) {
-        var data = {
+        const data = {
           WizCtl: 'PutBorderColor',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           borderColor: checkVar(borderColor),
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutBorderColor(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // borderStyle type is a number
       this.PutBorderStyle = function (borderStyle, _onPutBorderStyle) {
-        var data = {
+        const data = {
           WizCtl: 'PutBorderStyle',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           borderStyle: checkVar(borderStyle),
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutBorderStyle(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       // borderVisible type is bool
       this.PutBorderVisible = function (borderVisible, _onPutBorderVisible) {
-        var data = {
+        const data = {
           WizCtl: 'PutBorderVisible',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           borderVisible: checkVar(borderVisible),
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutBorderVisible(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // borderWidth is a number
       this.PutBorderWidth = function (borderWidth, _onPutBorderWidth) {
-        var data = {
+        const data = {
           WizCtl: 'PutBorderWidth',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           borderWidth: checkVar(borderWidth),
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutBorderWidth(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // enableWD is a bool
       this.PutEnableWizardDisplay = function (
         enableWD,
         _onPutEnableWizardDisplay,
       ) {
-        var data = {
+        const data = {
           WizCtl: 'PutEnableWizardDisplay',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           enableWD: checkVar(enableWD),
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutEnableWizardDisplay(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // font type is sigsdkptr.Variant (sigsdkptr.VariantType.VARIANT_FONT)
       this.PutFont = function (font, _onPutFont) {
-        var data = {
+        const data = {
           WizCtl: 'PutFont',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
         font.Stringify(data, 'font');
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutFont(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // licence type is a string
       this.PutLicence = function (licence, _onPutLicence) {
-        var data = {
+        const data = {
           WizCtl: 'PutLicence',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           licence: checkVar(licence),
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutLicence(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // height type is a number
       this.PutPadHeight = function (height, _onPutPadHeight) {
-        var data = {
+        const data = {
           WizCtl: 'PutPadHeight',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           height: checkVar(height),
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutPadHeight(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // width type is a number
       this.PutPadWidth = function (width, _onPutPadWidth) {
-        var data = {
+        const data = {
           WizCtl: 'PutPadWidth',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           width: checkVar(width),
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutPadWidth(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // properties type is a string
       this.PutProperties = function (properties, _onPutProperties) {
-        var data = {
+        const data = {
           WizCtl: 'PutProperties',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           properties: checkVar(properties),
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutProperties(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // font type is sigsdkptr.Variant (sigsdkptr.VariantType.VARIANT_FONT)
       this.PutRefFont = function (font, _onPutRefFont) {
-        var data = {
+        const data = {
           WizCtl: 'PutRefFont',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
         font.Stringify(data, 'font');
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutRefFont(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // visible type is boolean
       this.PutVisibleWindow = function (visible, _onPutVisibleWindow) {
-        var data = {
+        const data = {
           WizCtl: 'PutVisibleWindow',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           visible: Number(visible),
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutVisibleWindow(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // zoom type is a real number
       this.PutZoom = function (zoom, _onPutZoom) {
-        var data = {
+        const data = {
           WizCtl: 'PutZoom',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           zoom: checkVar(zoom),
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onPutZoom(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
       this.Reset = function (_onReset) {
-        var data = {
+        const data = {
           WizCtl: 'Reset',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onReset(thisptr, parseInt(server_data.status));
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
       // key type is string
       // value type is sigsdkptr.Variant
       this.SetProperty = function (key, value, _onSetProperty) {
-        var data = {
+        const data = {
           WizCtl: 'SetProperty',
           session: sigsdkptr.session,
           handle: thisptr.handle,
           key: key,
         };
-        function callback(server_data) {
+        function callback(server_data: { status: string }) {
           _onSetProperty(thisptr, parseInt(server_data.status));
         }
         value.Stringify(data, 'value');
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
 
-      var evh;
+      let evh: (arg0: null, arg1: any, arg2: number, arg3: number) => void;
       this.SetEventHandler = function (eventHandler) {
-        var data = {
+        const data = {
           WizCtl: 'SetEventHandler',
           session: sigsdkptr.session,
           handle: thisptr.handle,
         };
         evh = eventHandler;
 
-        function callback(server_data) {
-          var update_data = {
+        function callback(server_data: {
+          [x: string]: string;
+          status: string;
+        }) {
+          const update_data = {
             WizCtl: 'UpdateEventHandler',
             session: sigsdkptr.session,
             handle: thisptr.handle,
           };
           if (0 == parseInt(server_data.status)) {
-            JSONreq.getJSON(server_url + 'wacom.js', update_data, callback);
+            JSONreq.getJSON(
+              server_url + 'wacom.js',
+              update_data as any,
+              callback,
+            );
           } else if ('undefined' === typeof server_data.status) return;
           setTimeout(function () {
             evh(
@@ -3034,7 +3469,7 @@ export class WacomGSS_SignatureSDK {
             );
           }, 0);
         }
-        JSONreq.getJSON(server_url + 'wacom.js', data, callback);
+        JSONreq.getJSON(server_url + 'wacom.js', data as any, callback);
       };
     }; // WizCtl
   }
