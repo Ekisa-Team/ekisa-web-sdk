@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://github.com/Ekisa-Team/ekisa-web-sdk/compare/v0.2.0...v0.1.4) (2021-08-09)
+
 ### [0.1.5](https://github.com/Ekisa-Team/ekisa-web-sdk/compare/v0.1.5...v0.1.4) (2021-08-02)
 
 ### [0.1.4](https://github.com/Ekisa-Team/ekisa-sdk/compare/v0.1.3...v0.1.4) (2021-06-25)
