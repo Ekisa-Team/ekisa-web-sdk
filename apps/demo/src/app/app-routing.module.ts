@@ -9,8 +9,15 @@ const routes: Routes = [
         path: 'media-stream',
         loadChildren: () =>
           import('./pages/media-stream-demo/media-stream-demo.module').then(
-            (m) => m.MediaStreamDemoModule
+            (m) => m.MediaStreamDemoModule,
           ),
+      },
+      {
+        path: 'wacom-signature',
+        loadChildren: () =>
+          import(
+            './pages/wacom-signature-demo/wacom-signature-demo.module'
+          ).then((m) => m.WacomSignatureDemoModule),
       },
     ],
   },
