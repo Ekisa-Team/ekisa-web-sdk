@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="mb-12">
+    <h3>Opción 1 (Insertar nodo HTML)</h3>
+    <div #signatureBox></div>
+  </div>
+
+  <div class="mb-12">
+    <h3>Opción 2 (Asignar base64 al atributo src)</h3>
+    <img *ngIf="signature" [src]="signature" alt="User's signature" />
+  </div>
+
+  <div class="mb-12">
+    <ews-wacom-signature
+      who="John Doe"
+      reason="Firma del contrato"
+      [printLogs]="true"
+      (captured)="onCaptured($event)"
+    ></ews-wacom-signature>
+  </div>
+
+  <button
+    class="inline-flex items-center px-4 py-2 text-white bg-blue-600 rounded-xl hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 focus:outline-none"
+    (click)="onClickCapture()"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="w-5 h-5 mr-2"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+      />
+    </svg>
+
+    Capturar
+  </button>
+</div>
