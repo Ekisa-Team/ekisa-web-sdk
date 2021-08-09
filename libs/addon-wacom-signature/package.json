@@ -1,6 +1,24 @@
 {
   "name": "@ekisa-web-sdk/addon-wacom-signature",
   "version": "0.0.1",
+  "description": "Ekisa web-SDK addon: wacom-signature",
+  "keywords": [
+    "angular",
+    "wacom",
+    "signature",
+    "signature-capture"
+  ],
+  "homepage": "https://github.com/Ekisa-Team/ekisa-web-sdk/blob/main/libs/addon-wacom-signature/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ekisa-Team/ekisa-web-sdk.git",
+    "directory": "libs/addon-wacom-signature"
+  },
+  "bugs": {
+    "url": "https://github.com/Ekisa-Team/ekisa-web-sdk/issues"
+  },
+  "license": "MIT",
+  "author": "juanmesa2097",
   "peerDependencies": {
     "@angular/common": "^12.0.5",
     "@angular/core": "^12.0.5"
