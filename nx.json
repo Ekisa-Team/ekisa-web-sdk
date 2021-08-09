@@ -20,13 +20,16 @@
   },
   "projects": {
     "addon-media-stream": {
-      "tags": ["lib", "ui"]
+      "tags": ["scope:lib", "type:addon"]
+    },
+    "addon-wacom-signature": {
+      "tags": ["scope:lib", "type:addon"]
     },
     "core": {
-      "tags": ["lib"]
+      "tags": ["scope:lib", "type:core"]
     },
     "demo": {
-      "tags": ["app"]
+      "tags": ["scope:app"]
     },
     "demo-e2e": {
       "tags": [],

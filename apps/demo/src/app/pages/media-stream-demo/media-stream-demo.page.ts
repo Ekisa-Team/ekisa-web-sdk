@@ -27,7 +27,6 @@ export class MediaStreamDemoPage implements OnInit {
         videoHint: 'Enable / disable video',
         showSnapshot: true,
         snapshotText: 'Take a picture',
-        position: 'bottom',
       },
       snapshot: {
         audioSrc: '../assets/sounds/camera-shutter.mp3',
