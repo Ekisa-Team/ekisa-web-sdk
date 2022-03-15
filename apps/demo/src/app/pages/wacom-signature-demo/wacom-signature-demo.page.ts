@@ -3,11 +3,11 @@ import {
   Component,
   ElementRef,
   OnInit,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import {
   RenderBitmapResult,
-  WacomSignatureComponent,
+  WacomSignatureComponent
 } from '@ekisa-web-sdk/addon-wacom-signature';
 
 @Component({
@@ -25,7 +25,12 @@ export class WacomSignatureDemoPage implements OnInit {
   ngOnInit(): void {}
 
   onClickCapture(): void {
-    this.wacomSignature.capture();
+    try {
+      this.wacomSignature.capture();
+    } catch (error) {
+      console.log(error);
+      alert('Error ' + error)
+    }
   }
 
   onCaptured({ image, base64 }: RenderBitmapResult): void {
@@ -35,5 +40,12 @@ export class WacomSignatureDemoPage implements OnInit {
     this.signature = base64;
 
     this.cdr.detectChanges();
+  }
+
+  onCapturedError({type, message}: {type: string, message: string}): void {
+    console.log(type, message);
+    if (type === 'DynCaptStatus' && message === '103') {
+      alert('Tablet is disconnected');
+    }
   }
 }
