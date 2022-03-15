@@ -9,7 +9,7 @@ import {
   EventEmitter,
   Input,
   Output,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { RenderBitmapResult } from '../../types/options.types.js';
 import { LICENCEKEY, SERVICEPORT } from '../../wacom/SigCaptX-Globals';
@@ -33,6 +33,7 @@ window.JSONreq = JSONreq;
 export class WacomSignatureComponent {
   @ViewChild('canvas') canvas!: ElementRef<HTMLCanvasElement>;
 
+  @Input() licenceKey!: string;
   @Input() width = 400;
   @Input() height = 200;
   @Input() who!: string;
@@ -40,6 +41,10 @@ export class WacomSignatureComponent {
   @Input() printLogs!: boolean;
 
   @Output() captured = new EventEmitter<RenderBitmapResult>();
+  @Output() capturedError = new EventEmitter<{
+    type: string;
+    message: string;
+  }>();
 
   sdk: any = null;
   sigObj: any = null;
@@ -60,20 +65,20 @@ export class WacomSignatureComponent {
 
     function timedDetect() {
       if (that.sdk.running) {
-        that.print('Signature SDK Service detected.');
+        that.log('info', 'Signature SDK Service detected.');
         start();
       } else {
-        that.print('Signature SDK Service not detected.');
+        that.log('info', 'Signature SDK Service not detected.');
       }
     }
 
     function onDetectRunning() {
       if (that.sdk.running) {
-        that.print('Signature SDK Service detected.');
+        that.log('info', 'Signature SDK Service detected.');
         clearTimeout(timeout);
         start();
       } else {
-        that.print('Signature SDK Service not detected.');
+        that.log('info', 'Signature SDK Service not detected.');
       }
     }
 
@@ -85,9 +90,12 @@ export class WacomSignatureComponent {
 
     function onSigCtlConstructor(sigCtlV: any, status: any) {
       if (that.sdk.ResponseStatus.OK == status) {
-        that.sigCtl.PutLicence(LICENCEKEY, onSigCtlPutLicence);
+        that.sigCtl.PutLicence(
+          that.licenceKey ?? LICENCEKEY,
+          onSigCtlPutLicence,
+        );
       } else {
-        that.print('SigCtl constructor error: ', status);
+        that.log('info', 'SigCtl constructor error: ', status);
       }
     }
 
@@ -95,7 +103,7 @@ export class WacomSignatureComponent {
       if (that.sdk.ResponseStatus.OK == status) {
         that.dynCapt = new that.sdk.DynamicCapture(onDynCaptConstructor);
       } else {
-        that.print('SigCtl PutLicence error: ', status);
+        that.log('info', 'SigCtl PutLicence error: ', status);
       }
     }
 
@@ -103,7 +111,7 @@ export class WacomSignatureComponent {
       if (that.sdk.ResponseStatus.OK == status) {
         that.sigCtl.GetSignature(onGetSignature);
       } else {
-        that.print('DynCapt constructor error: ', status);
+        that.log('info', 'DynCapt constructor error: ', status);
       }
     }
 
@@ -112,30 +120,30 @@ export class WacomSignatureComponent {
         that.sigObj = sigObjV;
         that.sigCtl.GetProperty('Component_FileVersion', onSigCtlGetProperty);
       } else {
-        that.print('SigCapt GetSignature error: ', status);
+        that.log('info', 'SigCapt GetSignature error: ', status);
       }
     }
 
     function onSigCtlGetProperty(sigCtlV: any, property: any, status: any) {
       if (that.sdk.ResponseStatus.OK == status) {
-        that.print('DLL: flSigCOM.dll', 'v', property.text);
+        that.log('info', 'DLL: flSigCOM.dll', 'v', property.text);
         that.dynCapt.GetProperty('Component_FileVersion', onDynCaptGetProperty);
       } else {
-        that.print('SigCtl GetProperty error: ', status);
+        that.log('info', 'SigCtl GetProperty error: ', status);
       }
     }
 
     function onDynCaptGetProperty(dynCaptV: any, property: any, status: any) {
       if (that.sdk.ResponseStatus.OK == status) {
-        that.print('DLL: flSigCapt.dll', 'v', property.text);
-        that.print('Application ready.');
-        that.print("Press 'Capture' to capture a signature.");
+        that.log('info', 'DLL: flSigCapt.dll', 'v', property.text);
+        that.log('info', 'Application ready.');
+        that.log('info', "Press 'Capture' to capture a signature.");
 
         if (typeof callback === 'function') {
           callback();
         }
       } else {
-        that.print('DynCapt GetProperty error: ' + status);
+        that.log('info', 'DynCapt GetProperty error: ' + status);
       }
     }
   }
@@ -145,7 +153,7 @@ export class WacomSignatureComponent {
     const that = this;
 
     if (!this.sdk.running || !this.dynCapt) {
-      this.print('Session error. Restarting the session.');
+      this.log('info', 'Session error. Restarting the session.');
       this.restartSession(this.capture);
       return;
     }
@@ -161,16 +169,20 @@ export class WacomSignatureComponent {
 
     function onDynCaptCapture(dynCaptV: any, SigObjV: any, status: any) {
       if (that.sdk.ResponseStatus.INVALID_SESSION == status) {
-        that.print('Error: invalid session. Restarting the session.');
+        that.log('info', 'Error: invalid session. Restarting the session.');
         that.restartSession(that.capture);
       } else {
         if (that.sdk.DynamicCaptureResult.DynCaptOK !== status) {
-          that.print('Capture returned: ' + status);
+          that.capturedError.emit({
+            type: 'DynCaptStatus',
+            message: status.toString(),
+          });
         }
+
         switch (status) {
           case that.sdk.DynamicCaptureResult.DynCaptOK:
             that.sigObj = SigObjV;
-            that.print('Signature captured successfully');
+            that.log('info', 'Signature captured successfully');
 
             // eslint-disable-next-line no-case-declarations
             const flags =
@@ -191,25 +203,46 @@ export class WacomSignatureComponent {
             );
             break;
           case that.sdk.DynamicCaptureResult.DynCaptCancel:
-            that.print('Signature capture cancelled');
+            that.capturedError.emit({
+              type: 'DynCaptCancel',
+              message: 'Signature capture cancelled',
+            });
             break;
           case that.sdk.DynamicCaptureResult.DynCaptPadError:
-            that.print('No capture service available');
+            that.capturedError.emit({
+              type: 'DynCaptPadError',
+              message: 'No capture service available',
+            });
             break;
           case that.sdk.DynamicCaptureResult.DynCaptError:
-            that.print('Tablet Error');
+            that.capturedError.emit({
+              type: 'DynCaptError',
+              message: 'Tablet Error',
+            });
             break;
           case that.sdk.DynamicCaptureResult.DynCaptIntegrityKeyInvalid:
-            that.print('The integrity key parameter is invalid (obsolete)');
+            that.capturedError.emit({
+              type: 'DynCaptIntegrityKeyInvalid',
+              message: 'The integrity key parameter is invalid (obsolete)',
+            });
             break;
           case that.sdk.DynamicCaptureResult.DynCaptNotLicensed:
-            that.print('No valid Signature Capture licence found');
+            that.capturedError.emit({
+              type: 'DynCaptNotLicensed',
+              message: 'No valid Signature Capture licence found',
+            });
             break;
           case that.sdk.DynamicCaptureResult.DynCaptAbort:
-            that.print('Error - unable to parse document contents');
+            that.capturedError.emit({
+              type: 'DynCaptAbort',
+              message: 'Error - unable to parse document contents',
+            });
             break;
           default:
-            that.print('Capture Error ' + status);
+            that.capturedError.emit({
+              type: 'Default',
+              message: 'Capture Error ' + status,
+            });
             break;
         }
       }
@@ -226,14 +259,23 @@ export class WacomSignatureComponent {
           base64: that.canvas.nativeElement.toDataURL(),
         });
       } else {
-        that.print('Signature Render Bitmap error: ' + status);
+        that.log('info', 'Signature Render Bitmap error: ' + status);
       }
     }
   }
 
-  private print(...message: string[]): void {
+  private log(type: 'info' | 'warn' | 'error', ...message: string[]): void {
     if (this.printLogs) {
-      console.log(...message);
+      switch (type) {
+        case 'info':
+          console.log(...message);
+          break;
+        case 'warn':
+          console.warn(...message);
+          break;
+        case 'error':
+          throw new Error(...message);
+      }
     }
   }
 }
